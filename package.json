@@ -1,0 +1,25 @@
+{
+  "name": "deal-19",
+  "version": "1.0.0",
+  "description": "우아한테크캠프4기 우아마켓 19팀",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woowa-techcamp-2021/deal-19.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/woowa-techcamp-2021/deal-19/issues"
+  },
+  "homepage": "https://github.com/woowa-techcamp-2021/deal-19#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.14.5",
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7"
+  }
+}
