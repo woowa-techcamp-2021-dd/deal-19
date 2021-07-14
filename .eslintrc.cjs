@@ -5,14 +5,14 @@ module.exports = {
     node: true
   },
   extends: [
-    'standard',
-    'prettier'
+    'standard'
   ],
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module'
   },
   rules: {
-    semi: ['error', 'always']
+    semi: ['error', 'always'],
+    indent: ['error', 2]
   }
 };
