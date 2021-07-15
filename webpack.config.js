@@ -26,7 +26,15 @@ export default {
     rules: [
       {
         test: /\.s[ac]ss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [
+          MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: `@import "${__dirname}/public/configs/globalStyle.scss"`
+            }
+          }
+        ],
         exclude: /node_modules/
       },
       {
