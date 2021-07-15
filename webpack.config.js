@@ -31,7 +31,7 @@ export default {
           {
             loader: 'sass-loader',
             options: {
-              additionalData: `@import "${__dirname}/public/configs/globalStyle.scss"`
+              additionalData: `@import "${__dirname}/public/configs/globalStyle.scss";`
             }
           }
         ],
