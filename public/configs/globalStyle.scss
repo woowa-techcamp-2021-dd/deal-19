@@ -37,6 +37,7 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
   font-family: 'Noto Sans KR', sans-serif;
+  position: relative;
   
   &::-webkit-scrollbar {
     display: none;
@@ -141,6 +142,9 @@ body {
     font-size: var(--medium-font-size);
     height: 40px;
     padding: 10px 16px 8px;
+  }
+  &.full{
+   width: 100%; 
   }
   &:focus{
     border: 1px solid var(--primary-color)
