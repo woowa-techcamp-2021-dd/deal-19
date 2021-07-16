@@ -1,4 +1,4 @@
-import Component from '../../core/Component.js';
+import Component from '../../core/component.js';
 import './style.scss';
 
 const $root = document.querySelector('#root');
