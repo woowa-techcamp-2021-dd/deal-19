@@ -46,6 +46,10 @@ export default {
             presets: ['@babel/preset-env']
           }
         }
+      },
+      {
+        test: /\.(woff|woff2|otf|ttf|svg|png|ico)$/,
+        loader: 'file-loader'
       }
     ]
   },
