@@ -1,4 +1,5 @@
 import Component from '../core/component.js';
+import _ from '../utils/dom.js';
 import './header.scss';
 
 export default class Header extends Component {
@@ -17,9 +18,32 @@ export default class Header extends Component {
   }
 
   setEventListener () {
+    const { type, showSubPageBySlide, backToPrevPage } = this.props;
 
+    const $left = _.$('.header-left');
+
+    if (type === 'main') {
+      $left.addEventListener('click', () => {
+        showSubPageBySlide('category');
+      });
+      return;
+    }
+
+    $left.addEventListener('click', () => {
+      if (backToPrevPage) {
+        // history 직전 페이지가 아닌 다른 곳을 원할 때 or 클라이언트 사이드
+        backToPrevPage();
+        return;
+      }
+      // history에 남아있는 직전 페이지로 서버에 리다이렉트 요청
+      moveToPrevPage();
+    });
   }
 }
+
+const moveToPrevPage = () => {
+  console.log('직전 페이지로');
+};
 
 const renderHeaderLeft = (type) => {
   if (type !== 'main') {
