@@ -11,32 +11,19 @@ export default class Header extends Component {
         <div class="header-left">${renderHeaderLeft(type)}</div>
         <div class="header-center">${title}</div>
         <div class="header-right">
-          ${renderHeaderMenu(type)}
+          ${renderHeaderRight(type)}
         </div>
       </div>
       `;
   }
 
   setEventListener () {
-    const { showLocation } = this;
-    const { type, showSubPageBySlide, backToPrevPage } = this.props;
+    const { type, backToPrevPage } = this.props;
 
     const $left = _.$('.header-left');
 
     if (type === 'main') {
-      $left.addEventListener('click', () => {
-        showSubPageBySlide('category');
-      });
-
-      _.$('.header-center').addEventListener('click', showLocation);
-
-      _.$('.header-my-account').addEventListener('click', () => {
-        showSubPageBySlide('myAccount');
-      });
-
-      _.$('.header-menu').addEventListener('click', () => {
-        showSubPageBySlide('myMenu');
-      });
+      this.setMainHeaderHandler();
       return;
     }
 
@@ -48,6 +35,22 @@ export default class Header extends Component {
       }
       // history에 남아있는 직전 페이지로 서버에 리다이렉트 요청
       moveToPrevPage();
+    });
+  }
+
+  setMainHeaderHandler () {
+    const { showLocation } = this;
+    const { showSubPageBySlide } = this.props;
+
+    _.$('.header-left').addEventListener('click', () => {
+      showSubPageBySlide('category');
+    });
+    _.$('.header-center').addEventListener('click', showLocation);
+    _.$('.header-my-account').addEventListener('click', () => {
+      showSubPageBySlide('myAccount');
+    });
+    _.$('.header-menu').addEventListener('click', () => {
+      showSubPageBySlide('myMenu');
     });
   }
 
@@ -67,7 +70,7 @@ const renderHeaderLeft = (type) => {
   return '<div class="wmi-category"></div>';
 };
 
-const renderHeaderMenu = (type) => {
+const renderHeaderRight = (type) => {
   if (!type) return '';
 
   switch (type) {
@@ -77,6 +80,8 @@ const renderHeaderMenu = (type) => {
       return '<div class="wmi-check"></div>';
     case 'detail':
       return '<div class="wmi-more-vertical"></div>';
+    case 'chat':
+      return '<div class="wmi-log-out"></div>';
     default :
       return '';
   }
