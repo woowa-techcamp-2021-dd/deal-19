@@ -21,10 +21,16 @@ export default class Header extends Component {
     const { type, backToPrevPage } = this.props;
 
     const $left = _.$('.header-left');
+    if (!['main', 'write', 'detail', 'chat'].includes(type)) {
+      throw new Error('정확한 타입 지정 & 아예 쓰지 말 것');
+    }
 
     if (type === 'main') {
       this.setMainHeaderHandler();
       return;
+    }
+    if (type) {
+      this.setRightIconHandler(type);
     }
 
     $left.addEventListener('click', () => {
@@ -51,6 +57,26 @@ export default class Header extends Component {
     });
     _.$('.header-menu').addEventListener('click', () => {
       showSubPageBySlide('myMenu');
+    });
+  }
+
+  setRightIconHandler (handler) {
+    const { type } = this.props;
+    const $rightIcon = _.$('.header-right > div');
+    $rightIcon.addEventListener('click', () => {
+      switch (type) {
+        case 'write':
+          console.log('글 쓰기');
+          break;
+        case 'detail':
+          console.log('수정/삭제 드롭박스 열기');
+          break;
+        case 'chat':
+          console.log('나가기 확인 모달');
+          break;
+        default:
+          return new Error('잘못된 타입');
+      }
     });
   }
 
