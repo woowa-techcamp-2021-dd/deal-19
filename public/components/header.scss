@@ -1,0 +1,32 @@
+@import '../assets/woowa-market-icons.css';
+
+.header {
+  display:flex;
+  justify-content: space-between;
+  padding : 20px;
+  background: var(--off-white-color);
+  border-bottom: 1px solid var(--gray3-color);
+
+  &.main{
+    background: var(--primary-color);
+    color: var(--white-color);
+    border-radius: 0px 0px 16px 16px;
+  }
+  
+  & > * {
+    flex: 1;
+  }
+}
+
+.header-center {
+  display: flex;
+  justify-content: center;
+}
+
+.header-right {
+  display: flex;
+  justify-content: flex-end;
+  & > div + div {
+    margin-left : 10px;
+  }
+}
