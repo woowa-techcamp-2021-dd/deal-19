@@ -3,6 +3,7 @@ import _ from '../../utils/dom.js';
 
 import Header from '../../components/header.js';
 import ProductList from '../../components/list.js';
+import FAB from './fab/index.js';
 
 import './style.scss';
 
@@ -28,6 +29,7 @@ class App extends Component {
 
     new Header($header, { type: 'main', title: '방이동' });
     new ProductList($list, { productList });
+    new FAB($list, { link: '' });
   }
 
   setEventListener () {
