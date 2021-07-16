@@ -18,6 +18,7 @@ export default class Header extends Component {
   }
 
   setEventListener () {
+    const { showLocation } = this;
     const { type, showSubPageBySlide, backToPrevPage } = this.props;
 
     const $left = _.$('.header-left');
@@ -25,6 +26,16 @@ export default class Header extends Component {
     if (type === 'main') {
       $left.addEventListener('click', () => {
         showSubPageBySlide('category');
+      });
+
+      _.$('.header-center').addEventListener('click', showLocation);
+
+      _.$('.header-my-account').addEventListener('click', () => {
+        showSubPageBySlide('myAccount');
+      });
+
+      _.$('.header-menu').addEventListener('click', () => {
+        showSubPageBySlide('myMenu');
       });
       return;
     }
@@ -38,6 +49,10 @@ export default class Header extends Component {
       // history에 남아있는 직전 페이지로 서버에 리다이렉트 요청
       moveToPrevPage();
     });
+  }
+
+  showLocation () {
+    console.log('동네 보여주기');
   }
 }
 
@@ -57,7 +72,7 @@ const renderHeaderMenu = (type) => {
 
   switch (type) {
     case 'main':
-      return '<div class="wmi-user"></div><div class="wmi-menu"></div>';
+      return '<div class="wmi-user header-my-account"></div><div class="wmi-menu header-menu"></div>';
     case 'write':
       return '<div class="wmi-check"></div>';
     case 'detail':
