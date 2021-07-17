@@ -18,12 +18,12 @@
   }
 }
 
-.header-center {
+.header__title {
   display: flex;
   justify-content: center;
 }
 
-.header-right {
+.header__right-box {
   display: flex;
   justify-content: flex-end;
   & > div + div {

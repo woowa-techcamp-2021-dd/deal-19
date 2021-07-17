@@ -8,9 +8,9 @@ export default class Header extends Component {
 
     return `
       <div class="header ${type}">
-        <div class="header-left">${renderHeaderLeft(type)}</div>
-        <div class="header-center">${title}</div>
-        <div class="header-right">
+        <div class="header__left-box">${renderHeaderLeft(type)}</div>
+        <div class="header__title">${title}</div>
+        <div class="header__right-box">
           ${renderHeaderRight(type)}
         </div>
       </div>
@@ -20,7 +20,7 @@ export default class Header extends Component {
   setEventListener () {
     const { type, backToPrevPage } = this.props;
 
-    const $left = _.$('.header-left');
+    const $left = _.$('.header__left-box');
     if (!['main', 'write', 'detail', 'chat'].includes(type)) {
       throw new Error('정확한 타입 지정 & 아예 쓰지 말 것');
     }
@@ -48,31 +48,33 @@ export default class Header extends Component {
     const { showLocation } = this;
     const { showSubPageBySlide } = this.props;
 
-    _.$('.header-left').addEventListener('click', () => {
+    _.$('.header__left-box').addEventListener('click', () => {
       showSubPageBySlide('category');
     });
-    _.$('.header-center').addEventListener('click', showLocation);
-    _.$('.header-my-account').addEventListener('click', () => {
+    _.$('.header__title').addEventListener('click', showLocation);
+    _.$('.header__my-account').addEventListener('click', () => {
       showSubPageBySlide('myAccount');
     });
-    _.$('.header-menu').addEventListener('click', () => {
+    _.$('.header__menu').addEventListener('click', () => {
       showSubPageBySlide('myMenu');
     });
   }
 
   setRightIconHandler (handler) {
     const { type } = this.props;
-    const $rightIcon = _.$('.header-right > div');
+    const $rightIcon = _.$('.header__right-box > div');
     $rightIcon.addEventListener('click', () => {
       switch (type) {
         case 'write':
           console.log('글 쓰기');
           break;
         case 'detail':
-          console.log('수정/삭제 드롭박스 열기');
+          console.log('수정/삭제 드롭박스 생성');
+          // new DropDown($rightIcon, {});
           break;
         case 'chat':
-          console.log('나가기 확인 모달');
+          console.log('나가기 확인 모달 생성');
+          // new Modal($rightIcon, {})
           break;
         default:
           return new Error('잘못된 타입');
@@ -101,7 +103,7 @@ const renderHeaderRight = (type) => {
 
   switch (type) {
     case 'main':
-      return '<div class="wmi-user header-my-account"></div><div class="wmi-menu header-menu"></div>';
+      return '<div class="wmi-user header__my-account"></div><div class="wmi-menu header__menu"></div>';
     case 'write':
       return '<div class="wmi-check"></div>';
     case 'detail':
