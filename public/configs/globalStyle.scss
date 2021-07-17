@@ -32,12 +32,13 @@ body {
   height: 650px;
   background-color: white;
   border-radius: 10px;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
   font-family: 'Noto Sans KR', sans-serif;
   position: relative;
+  display: flex;
+  flex-direction: column;
   
   &::-webkit-scrollbar {
     display: none;

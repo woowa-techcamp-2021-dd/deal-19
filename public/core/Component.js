@@ -3,8 +3,6 @@ import _ from '../utils/dom.js';
 export default class Component {
   constructor ($target, props = {}) {
     this.$target = $target;
-    this.$self = document.createElement('div');
-    this.$target.append(this.$self);
     this.props = props;
     this.state = {};
     this.children = [];
@@ -44,6 +42,9 @@ export default class Component {
   }
 
   _render () {
+    this.$target.innerHTML = '';
+    this.$self = document.createElement('div');
+    this.$target.append(this.$self);
     this.$self.outerHTML = this.getTemplate();
     this.mountChildren();
     this.didMount();
