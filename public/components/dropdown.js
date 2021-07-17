@@ -1,28 +1,24 @@
 import Component from '../core/component.js';
-import _ from '../utils/dom.js';
 
 import './dropdown.scss';
 
 export default class Dropdown extends Component {
+  initState () {
+    this.state = {
+      isOpen: false
+    };
+  }
+
   getTemplate () {
-    const { buttonList } = this.props;
+    const { isOpen } = this.state;
+    const { buttonTemplate, position } = this.props;
 
     return `
       <div class="dropdown__container">
-        ${
-          buttonList.map((button, i) => {
-            const { label, color } = button;
-
-            return (`
-              <button
-                id="dropdown-button-${i}"
-                ${color ? `style="color: ${color}"` : ''}
-              >
-                ${label}
-              </button>
-            `);
-          }).join('')
-        }
+        ${buttonTemplate}
+        <div class="dropdown__wrapper ${position}">
+          ${isOpen ? this.renderDropdown() : ''}
+        </div>
       </div>
     `;
   }
@@ -30,16 +26,37 @@ export default class Dropdown extends Component {
   setEventListener () {
     const { buttonList } = this.props;
 
-    this.$target.addEventListener('mouseenter', () => {
-      _.$('.dropdown__container').classList.add('open');
-    });
-
-    this.$target.addEventListener('mouseleave', () => {
-      _.$('.dropdown__container').classList.remove('open');
+    this.$target.addEventListener('click', (e) => {
+      const { isOpen } = this.state;
+      this.setState({ isOpen: !isOpen });
     });
 
     buttonList.forEach(({ action }, i) => {
       this.addEventListener('click', `#dropdown-button-${i}`, action);
     });
+  }
+
+  // Custom Method
+  renderDropdown () {
+    const { buttonList } = this.props;
+
+    return `
+      <div class="dropdown">
+      ${
+        buttonList.map((button, i) => {
+          const { label, color } = button;
+
+          return (`
+            <button
+              id="dropdown-button-${i}"
+              ${color ? `style="color: ${color}"` : ''}
+            >
+              ${label}
+            </button>
+          `);
+        }).join('')
+      }
+      </div>
+    `;
   }
 }
