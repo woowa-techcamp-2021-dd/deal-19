@@ -21,7 +21,7 @@ export default class Header extends Component {
     const { type, backToPrevPage, handlerClickRightIcon } = this.props;
 
     const $left = _.$('.header__left-box');
-    if (!['main', 'write', 'detail', 'chat'].includes(type)) {
+    if (type && !['main', 'write', 'detail', 'chat'].includes(type)) {
       throw new Error('정확한 타입 지정 & 아예 쓰지 말 것');
     }
 
