@@ -18,7 +18,7 @@ export default class Header extends Component {
   }
 
   setEventListener () {
-    const { type, backToPrevPage, handlerClickRightIcon } = this.props;
+    const { type, handlerClickRightIcon, hideSubPageBySlide } = this.props;
 
     const $left = _.$('.header__left-box');
     if (type && !['main', 'write', 'detail', 'chat'].includes(type)) {
@@ -37,12 +37,10 @@ export default class Header extends Component {
     }
 
     $left.addEventListener('click', () => {
-      if (backToPrevPage) {
-        // history 직전 페이지가 아닌 다른 곳을 원할 때 or 클라이언트 사이드
-        backToPrevPage();
+      if (hideSubPageBySlide) {
+        hideSubPageBySlide();
         return;
       }
-      // history에 남아있는 직전 페이지로 서버에 리다이렉트 요청
       moveToPrevPage();
     });
   }
@@ -74,7 +72,7 @@ export default class Header extends Component {
 }
 
 const moveToPrevPage = () => {
-  console.log('직전 페이지로');
+  window.history.back();
 };
 
 const renderHeaderLeft = (type) => {
