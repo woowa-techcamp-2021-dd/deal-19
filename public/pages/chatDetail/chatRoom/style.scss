@@ -1,0 +1,36 @@
+@import '../../../assets/woowa-market-icons.css';
+
+@import '../../../configs//globalStyle.scss';
+
+#chat-detail__container {
+  display: flex;
+  flex-direction: column;
+}
+
+#chat-detail__product-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--gray2-color);
+  ;
+  padding: 16px;
+  & > figure {
+    width: 40px;
+    height: 40px;
+    & > img {
+      width: 100%;
+    }
+  }
+  & > .product-text-info {
+    flex: 1;
+    margin-left: 10px;
+  }
+  & > .product-state {
+    border: 1px solid var(--gray2-color);
+    padding: 10px 16px;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+  
+}
+
