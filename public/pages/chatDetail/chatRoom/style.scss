@@ -31,6 +31,40 @@
     border-radius: 8px;
     box-sizing: border-box;
   }
-  
 }
 
+#chat-detail__chatroom {
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 15px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  & > li + li {
+    margin-top: 20px;
+  }
+  & > li {
+    width: 100%;
+    display:flex;
+
+    &.receive > div {
+      border: 1px solid var(--primary-color);
+      border-radius: 0px 8px 8px 8px;
+      padding: 8px;
+
+    }
+
+    &.send  {
+      justify-content: flex-end;
+      & > div {
+      color : var(--white-color);
+      background: var(--primary-color);
+      border-radius: 8px 0px 8px 8px;
+      padding: 8px;
+      }
+    }
+  }
+}

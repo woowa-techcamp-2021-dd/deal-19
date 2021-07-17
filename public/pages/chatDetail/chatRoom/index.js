@@ -37,7 +37,11 @@ export default class ChatRoom extends Component {
         <div class="product-state">${saleState === 'sale' ? '판매중' : '판매완료'}</div>
       </div>
       <ul id="chat-detail__chatroom">
-        ${log.map(({ type, say }) => `<li class="${type}">${say}</li>`)}
+        ${log.map(({ type, say }) => `
+          <li class="${type}">
+            <div>${say}</div>
+          </li>
+        `).join('')}
       </ul>
       <div id="chat-detail__input-box">
         <input type="text" placeholder="메세지를 입력하세요."/>
