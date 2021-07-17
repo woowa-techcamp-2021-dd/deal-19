@@ -1,0 +1,90 @@
+
+
+main {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dropdown {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--gray3-color);
+    width: fit-content;
+    color: var(--title-color);
+    font-size: var(--small-font-size);
+    font-weight: 500;
+
+    .wmi {
+      color: var(--grey1-color);
+    }
+  }
+
+  .content-container {
+    padding: 24px 16px;
+
+    h3 {
+      margin-top: 16px;
+      margin-bottom: 8px;
+      color: var(--title-color);
+      font-size: var(--large-font-size);
+    }
+
+    .info {
+      font-size: var(--x-small-font-size);
+      color: var(--grey1-color);
+    }
+
+    p {
+      margin-top: 16px;
+      margin-bottom: 24px;
+      color: var(--title-color);
+      font-size: var(--medium-font-size);
+      line-height: 22px;
+    }
+
+    .seller-info-box {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+      background: var(--off-white-color);
+      padding: 16px;
+
+      font-size: var(--small-font-size);
+      font-weight: 500;
+
+      span {
+        margin-left: 8px;
+        font-size: var(--x-small-font-size);
+        color: var(--gray2-color);
+        font-weight: 100;
+      }
+    }
+  }
+}
+
+footer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--gray3-color);
+
+  .wmi {
+    font-size: var(--large-font-size);
+  }
+
+  .divider {
+    width: 1px;
+    height: 36px;
+    background: var(--gray3-color);
+  }
+
+  button.light-color {
+    background-color: var(--primary-light-color);
+  }
+}
