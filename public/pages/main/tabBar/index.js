@@ -5,13 +5,18 @@ import './style.scss';
 
 export default class TabBar extends Component {
   getTemplate () {
-    const { tabList } = this.props;
+    const { current, tabList } = this.props;
     return `
       <div class="tab-bar__container">
         ${
-          tabList.map(({ label }, i) => {
+          tabList.map(({ id, label }, i) => {
             return (`
-              <button id="tab-bar-button-${i}">${label}</button>
+              <button
+                id="tab-bar-${id}"
+                class="${current === id ? 'current' : ''}"
+              >
+                ${label}
+              </button>
             `);
           }).join('')
         }
@@ -22,17 +27,9 @@ export default class TabBar extends Component {
   setEventListener () {
     const { tabList } = this.props;
 
-    const focusTab = (action) => (e) => {
-      _.$$('.tab-bar__container > button').forEach(($tab) => {
-        $tab.classList.remove('current');
-      });
-      e.target.classList.add('current');
-      action();
-    };
-
     tabList.forEach((tab, i) => {
-      const { action } = tab;
-      this.addEventListener('click', `#tab-bar-button-${i}`, focusTab(action));
+      const { id, action } = tab;
+      this.addEventListener('click', `#tab-bar-${id}`, action);
     });
   }
 }
