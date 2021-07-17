@@ -30,7 +30,7 @@ export default class Header extends Component {
   }
 
   setEventListener () {
-    const { type, handlerClickRightIcon, hideSubPageBySlide } = this.props;
+    const { type, handlerClickRightIcon, closeSlider } = this.props;
 
     const $left = _.$(`.header__left-box.${type}`);
     if (type && !['main', 'write', 'detail', 'chat'].includes(type)) {
@@ -50,8 +50,8 @@ export default class Header extends Component {
 
     $left.addEventListener('click', () => {
       console.log(1);
-      if (hideSubPageBySlide) {
-        hideSubPageBySlide();
+      if (closeSlider) {
+        closeSlider();
         console.log('슬라이더 닫기');
         return;
       }
@@ -61,17 +61,17 @@ export default class Header extends Component {
 
   setMainHeaderHandler () {
     const { showLocation } = this;
-    const { showSubPageBySlide, type } = this.props;
+    const { openSlider, type } = this.props;
 
     _.$(`.header__left-box.${type}`).addEventListener('click', () => {
-      showSubPageBySlide('category');
+      openSlider('category');
     });
     _.$(`.header__title.${type}`).addEventListener('click', showLocation);
     _.$(`.header__my-account.${type}`).addEventListener('click', () => {
-      showSubPageBySlide('myAccount');
+      openSlider('myPage');
     });
     _.$(`.header__menu.${type}`).addEventListener('click', () => {
-      showSubPageBySlide('myMenu');
+      openSlider('myMenu');
     });
   }
 
