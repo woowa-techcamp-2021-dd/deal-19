@@ -18,7 +18,7 @@ export default class Header extends Component {
   }
 
   setEventListener () {
-    const { type, backToPrevPage } = this.props;
+    const { type, backToPrevPage, handlerClickRightIcon } = this.props;
 
     const $left = _.$('.header__left-box');
     if (!['main', 'write', 'detail', 'chat'].includes(type)) {
@@ -29,8 +29,11 @@ export default class Header extends Component {
       this.setMainHeaderHandler();
       return;
     }
-    if (type) {
-      this.setRightIconHandler(type);
+    if (handlerClickRightIcon) {
+      if (!['write', 'detail', 'chat'].includes(type)) {
+        throw new Error('우측 아이콘 핸들러는 write, detail, chat 중 하나의 타입에서만 가능합니다.');
+      }
+      this.setRightIconHandler(handlerClickRightIcon);
     }
 
     $left.addEventListener('click', () => {
@@ -61,25 +64,8 @@ export default class Header extends Component {
   }
 
   setRightIconHandler (handler) {
-    const { type } = this.props;
     const $rightIcon = _.$('.header__right-box > div');
-    $rightIcon.addEventListener('click', () => {
-      switch (type) {
-        case 'write':
-          console.log('글 쓰기');
-          break;
-        case 'detail':
-          console.log('수정/삭제 드롭박스 생성');
-          // new DropDown($rightIcon, {});
-          break;
-        case 'chat':
-          console.log('나가기 확인 모달 생성');
-          // new Modal($rightIcon, {})
-          break;
-        default:
-          return new Error('잘못된 타입');
-      }
-    });
+    $rightIcon.addEventListener('click', handler);
   }
 
   showLocation () {
