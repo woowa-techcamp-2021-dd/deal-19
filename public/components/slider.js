@@ -4,12 +4,6 @@ import Header from './header.js';
 import './slider.scss';
 
 export default class Slider extends Component {
-  initState () {
-    this.state = {
-      isOpen: false
-    };
-  }
-
   getTemplate () {
     const { sliderState } = this.props;
 
@@ -22,14 +16,14 @@ export default class Slider extends Component {
   }
 
   mountChildren () {
-    const { Constructor, closeSlider, targetOfSlider, props } = this.props;
+    const { closeSlider, Constructor, title } = this.props;
 
     const $header = _.$('.slider__header');
     const $container = _.$('.slider__contents');
 
-    new Header($header, { title: '카테고리', hideSubPageBySlide: closeSlider });
+    new Header($header, { title, closeSlider });
 
-    new Constructor($container, props);
+    new Constructor($container, {});
   }
 
   setEventListener () {
