@@ -15,8 +15,10 @@ class App extends Component {
 
   getTemplate () {
     return `
+    <div id="chat-detail__container">
       <div id="chat-detail__header"></div>
       <div id="chat-detail__contents"></div>
+    </div>
     `;
   }
 

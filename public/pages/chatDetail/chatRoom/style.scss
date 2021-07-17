@@ -3,11 +3,17 @@
 @import '../../../configs//globalStyle.scss';
 
 #chat-detail__container {
-  display: flex;
-  flex-direction: column;
+  height: 650px;
+ 
 }
 
-#chat-detail__product-info {
+#chat-contents__container {
+  display: flex;
+  flex-direction: column;
+  height: 650px;
+}
+
+#chat-contents__product-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,8 +39,9 @@
   }
 }
 
-#chat-detail__chatroom {
-  overflow-x: scroll;
+#chat-contents__chatroom {
+  padding: 16px;
+  overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding: 15px;
@@ -66,5 +73,30 @@
       padding: 8px;
       }
     }
+  }
+}
+
+#chat-contents__input-box {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  padding: 8px 16px;
+  background: var(--off-white-color);
+  display: flex;
+  align-items: center;
+
+  & > input{
+    width : 100%;
+    height: 36px;
+    padding: 8px;
+    background: var(--white-color);
+    border-radius: 8px;
+    box-sizing: border-box;
+    border: 1px solid var(--gray3-color);
+  }
+
+  & > .wmi-send {
+    margin-left: 18px;
+    font-size: 20px;
   }
 }
