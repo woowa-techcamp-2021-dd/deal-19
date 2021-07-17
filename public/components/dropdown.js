@@ -30,11 +30,11 @@ export default class Dropdown extends Component {
   setEventListener () {
     const { buttonList } = this.props;
 
-    this.addEventListener('mouseenter', `#${this.$target.id}`, (e) => {
+    this.$target.addEventListener('mouseenter', () => {
       _.$('.dropdown__container').classList.add('open');
     });
 
-    this.addEventListener('mouseleave', `#${this.$target.id}`, (e) => {
+    this.$target.addEventListener('mouseleave', () => {
       _.$('.dropdown__container').classList.remove('open');
     });
 
