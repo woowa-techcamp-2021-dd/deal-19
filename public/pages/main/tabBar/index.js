@@ -1,5 +1,4 @@
 import Component from '../../../core/component.js';
-import _ from '../../../utils/dom.js';
 
 import './style.scss';
 
