@@ -1,7 +1,7 @@
 import Component from '../core/component.js';
 import _ from '../utils/dom.js';
 import './header.scss';
-// import DropDown from '../components/dropdown.js';
+import DropDown from '../components/dropdown.js';
 
 export default class Header extends Component {
   getTemplate () {
@@ -9,12 +9,24 @@ export default class Header extends Component {
     return `
       <div class="header ${type}">
         <div class="${type} header__left-box">${renderHeaderLeft(type)}</div>
-        <div class="${type} header__title">${type !== 'mian' ? title : ''}</div>
+        <div class="${type} header__title">${title}</div>
         <div class="${type} header__right-box">
           ${renderHeaderRight(type)}
         </div>
       </div>
       `;
+  }
+
+  mountChildren () {
+    const { type, title, buttonList } = this.props;
+
+    if (type === 'main') {
+      new DropDown(_.$('.header__title'), { buttonTemplate: `<div>${title}</div>`, position: 'center', buttonList });
+    }
+
+    if (type === 'detail') {
+      new DropDown(_.$('.header__right-box'), { buttonTemplate: '<div>삼쩜</div>', position: 'right', buttonList });
+    }
   }
 
   setEventListener () {
@@ -65,6 +77,7 @@ export default class Header extends Component {
 
   setRightIconHandler (handler) {
     const { type } = this.props;
+    if (type === 'detail') return;
     const $rightIcon = _.$(`.header__right-box.${type} > div`);
     $rightIcon.addEventListener('click', handler);
   }
