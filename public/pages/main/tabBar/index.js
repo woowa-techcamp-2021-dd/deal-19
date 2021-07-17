@@ -9,8 +9,7 @@ export default class TabBar extends Component {
     return `
       <div class="tab-bar__container">
         ${
-          tabList.map((tab, i) => {
-            const { label } = tab;
+          tabList.map(({ label }, i) => {
             return (`
               <button id="tab-bar-button-${i}">${label}</button>
             `);
