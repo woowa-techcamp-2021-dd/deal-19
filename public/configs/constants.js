@@ -56,3 +56,7 @@ export const categoryList = [
     id: 'etc'
   }
 ];
+
+export const PRODUCT_STATUS_SOLD = 'sold';
+export const PRODUCT_STATUS_RESERVED = 'reserved';
+export const PRODUCT_STATUS_ONSALE = 'onsale';
