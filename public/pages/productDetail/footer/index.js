@@ -7,7 +7,7 @@ function Footer (props) {
     <footer>
       ${
         isLiked
-        ? '<i class="wmi wmi-heart"></i>'
+        ? '<i class="wmi wmi-heart full"></i>'
         : '<i class="wmi wmi-heart"></i>'
       }
       <div class="divider"></div>

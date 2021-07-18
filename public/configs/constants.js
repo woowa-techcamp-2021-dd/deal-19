@@ -57,6 +57,8 @@ export const categoryList = [
   }
 ];
 
-export const PRODUCT_STATUS_SOLD = 'sold';
-export const PRODUCT_STATUS_RESERVED = 'reserved';
-export const PRODUCT_STATUS_ONSALE = 'onsale';
+export const PRODUCT_STATUS = {
+  SOLD: 'sold',
+  RESERVED: 'reserved',
+  ONSALE: 'onslae'
+};

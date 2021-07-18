@@ -1,4 +1,7 @@
 function timeFromNow (time) {
+  if (isNaN(new Date(time).getTime())) {
+    return '';
+  }
   const now = new Date().getTime();
 
   const minuteDifference = Math.floor((now - time) / 1000 / 60);

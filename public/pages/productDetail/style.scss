@@ -76,6 +76,10 @@ footer {
 
   .wmi {
     font-size: var(--large-font-size);
+    
+    &.full {
+      color: var(--red-color);
+    }
   }
 
   .divider {
