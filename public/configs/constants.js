@@ -56,3 +56,9 @@ export const categoryList = [
     id: 'etc'
   }
 ];
+
+export const PRODUCT_STATUS = {
+  SOLD: 'sold',
+  RESERVED: 'reserved',
+  ONSALE: 'onslae'
+};
