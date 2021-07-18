@@ -1,26 +1,38 @@
 import Component from '../core/component.js';
 import _ from '../utils/dom.js';
 import './header.scss';
+import DropDown from '../components/dropdown.js';
 
 export default class Header extends Component {
   getTemplate () {
     const { type, title } = this.props;
-
     return `
       <div class="header ${type}">
-        <div class="header__left-box">${renderHeaderLeft(type)}</div>
-        <div class="header__title">${title}</div>
-        <div class="header__right-box">
+        <div class="${type} header__left-box">${renderHeaderLeft(type)}</div>
+        <div class="${type} header__title">${title}</div>
+        <div class="${type} header__right-box">
           ${renderHeaderRight(type)}
         </div>
       </div>
       `;
   }
 
-  setEventListener () {
-    const { type, handlerClickRightIcon, hideSubPageBySlide } = this.props;
+  mountChildren () {
+    const { type, title, buttonList } = this.props;
 
-    const $left = _.$('.header__left-box');
+    if (type === 'main') {
+      new DropDown(_.$('.header__title'), { buttonTemplate: `<div><i class="wmi wmi-map-pin"></i> ${title}</div>`, position: 'center', buttonList });
+    }
+
+    if (type === 'detail') {
+      new DropDown(_.$('.header__right-box'), { buttonTemplate: '<div><i class="wmi wmi-more-vertical"></i></div>', position: 'right', buttonList });
+    }
+  }
+
+  setEventListener () {
+    const { type, handlerClickRightIcon, closeSlider } = this.props;
+
+    const $left = _.$(`.header__left-box.${type}`);
     if (type && !['main', 'write', 'detail', 'chat'].includes(type)) {
       throw new Error('정확한 타입 지정 & 아예 쓰지 말 것');
     }
@@ -37,8 +49,10 @@ export default class Header extends Component {
     }
 
     $left.addEventListener('click', () => {
-      if (hideSubPageBySlide) {
-        hideSubPageBySlide();
+      console.log(1);
+      if (closeSlider) {
+        closeSlider();
+        console.log('슬라이더 닫기');
         return;
       }
       moveToPrevPage();
@@ -47,22 +61,24 @@ export default class Header extends Component {
 
   setMainHeaderHandler () {
     const { showLocation } = this;
-    const { showSubPageBySlide } = this.props;
+    const { openSlider, type } = this.props;
 
-    _.$('.header__left-box').addEventListener('click', () => {
-      showSubPageBySlide('category');
+    _.$(`.header__left-box.${type}`).addEventListener('click', () => {
+      openSlider('category');
     });
-    _.$('.header__title').addEventListener('click', showLocation);
-    _.$('.header__my-account').addEventListener('click', () => {
-      showSubPageBySlide('myAccount');
+    _.$(`.header__title.${type}`).addEventListener('click', showLocation);
+    _.$(`.header__my-account.${type}`).addEventListener('click', () => {
+      openSlider('myPage');
     });
-    _.$('.header__menu').addEventListener('click', () => {
-      showSubPageBySlide('myMenu');
+    _.$(`.header__menu.${type}`).addEventListener('click', () => {
+      openSlider('myMenu');
     });
   }
 
   setRightIconHandler (handler) {
-    const $rightIcon = _.$('.header__right-box > div');
+    const { type } = this.props;
+    if (type === 'detail') return;
+    const $rightIcon = _.$(`.header__right-box.${type} > div`);
     $rightIcon.addEventListener('click', handler);
   }
 
@@ -87,11 +103,9 @@ const renderHeaderRight = (type) => {
 
   switch (type) {
     case 'main':
-      return '<div class="wmi-user header__my-account"></div><div class="wmi-menu header__menu"></div>';
+      return `<div class="wmi-user header__my-account ${type}"></div><div class="wmi-menu header__menu ${type}"></div>`;
     case 'write':
       return '<div class="wmi-check"></div>';
-    case 'detail':
-      return '<div class="wmi-more-vertical"></div>';
     case 'chat':
       return '<div class="wmi-log-out"></div>';
     default :
