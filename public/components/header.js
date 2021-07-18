@@ -21,11 +21,11 @@ export default class Header extends Component {
     const { type, title, buttonList } = this.props;
 
     if (type === 'main') {
-      new DropDown(_.$('.header__title'), { buttonTemplate: `<div>${title}</div>`, position: 'center', buttonList });
+      new DropDown(_.$('.header__title'), { buttonTemplate: `<div><i class="wmi wmi-map-pin"></i> ${title}</div>`, position: 'center', buttonList });
     }
 
     if (type === 'detail') {
-      new DropDown(_.$('.header__right-box'), { buttonTemplate: '<div>삼쩜</div>', position: 'right', buttonList });
+      new DropDown(_.$('.header__right-box'), { buttonTemplate: '<div><i class="wmi wmi-more-vertical"></i></div>', position: 'right', buttonList });
     }
   }
 
