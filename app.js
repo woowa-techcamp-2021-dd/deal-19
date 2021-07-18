@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpack from 'webpack';
+import './env.js';
 
 import indexRouter from './routes/index.js';
 
