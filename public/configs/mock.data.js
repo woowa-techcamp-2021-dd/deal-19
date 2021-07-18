@@ -71,6 +71,7 @@ export const LOG = [
   { type: 'send', say: '직거래 하면서 신어보세요' },
   { type: 'receive', say: '그럼 방이동에서 만나요' },
   { type: 'send', say: '좋습니다.' }
+];
 
 export const sellProductList = [
   {
@@ -109,7 +110,7 @@ export const product = {
   images: [
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnXqi4NtM7xGyS0nIqVnId1Gqzh5OikdsxCQ&usqp=CAU',
     'https://preview.free3d.com/img/2015/09/2188240554725214166/53dp3vdr-900.jpg',
-    'https://cdn.pixabay.com/photo/2016/10/21/21/27/star-wars-1759236_960_720.jpg',
+    'https://cdn.pixabay.com/photo/2016/10/21/21/27/star-wars-1759236_960_720.jpg'
   ],
   status: 'sold',
   name: '광선검',

@@ -4,11 +4,20 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpack from 'webpack';
+import './env.js';
 
 import indexRouter from './routes/index.js';
 
 import config from './webpack.config.js';
 import devServerMiddleware from './devServerMiddleware.js';
+import db from './model/db.js';
+
+db.getConnection((err) => {
+  if (err) {
+    throw err;
+  }
+  console.log('db connected');
+});
 
 const compiler = webpack(config);
 const __dirname = path.resolve();
