@@ -6,7 +6,8 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpack from 'webpack';
 import './env.js';
 
-import indexRouter from './routes/index.js';
+import router from './routes/index.js';
+import api from './api/index.js';
 
 import config from './webpack.config.js';
 import devServerMiddleware from './devServerMiddleware.js';
@@ -23,11 +24,18 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname)));
 
-app.use(webpackDevMiddleware(compiler, {
-  publicPath: config.output.publicPath
-}));
-app.use(devServerMiddleware(compiler));
+if (process.env.NODE_ENV === 'development') {
+  app.use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath
+  }));
+  app.use(devServerMiddleware(compiler));
+}
 
-app.use('/', indexRouter);
+app.use('/', router);
+app.use('/api', api);
+
+app.all('*', (req, res) => {
+  res.status(400).send('404');
+});
 
 export default app;
