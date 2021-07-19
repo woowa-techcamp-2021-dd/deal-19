@@ -7,13 +7,32 @@ const pool = mysql.createPool({
   password: process.env.DB_PASSWORD
 }).promise();
 
-export async function query (query) {
-  try {
-    const [rows] = await pool.query(query);
-    return rows;
-  } catch (err) {
-    console.log(err);
-  }
+export async function query (connection, query) {
+  const [rows] = await connection.query(query);
+
+  const data = {
+    isEmpty: !rows.length,
+    data: rows[0]
+  };
+
+  return data;
+}
+
+export async function queryAll (connection, query) {
+  const [rows] = await connection.query(query);
+
+  const data = {
+    isEmpty: !rows.length,
+    data: rows
+  };
+
+  return data;
+}
+
+export async function insert (connection, query) {
+  const [rows] = await connection.query(query);
+
+  return rows.insertId;
 }
 
 export default pool;
