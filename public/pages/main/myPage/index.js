@@ -23,8 +23,10 @@ export default class MyPage extends Component {
   }
 
   mountChildren () {
+    const { closeSlider } = this.props;
+
     const $header = _.$('#my-page__header');
-    new Header($header, { title: '내 계정' });
+    new Header($header, { title: '내 계정', closeSlider });
   }
 
   setEventListener () {
