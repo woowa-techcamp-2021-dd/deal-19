@@ -11,7 +11,7 @@ export async function query (connection, query) {
   const [rows] = await connection.query(query);
 
   const data = {
-    isEmpty: !rows.length,
+    isExists: Boolean(rows.length),
     data: rows[0]
   };
 
