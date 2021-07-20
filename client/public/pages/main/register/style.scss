@@ -4,6 +4,7 @@
   align-items: center;
   flex: 1;
   padding: 24px 16px 0;
+  position: relative;
 
   input, .btn {
     width: 100%;
@@ -20,9 +21,14 @@
     }
   }
 
+  .button-wrapper {
+    width: 100%;
+  }
+
   .error-message {
     font-size: var(--x-small-font-size);
     color: var(--red-color);
     margin-top: 4px;
+    position: absolute;
   }
 }

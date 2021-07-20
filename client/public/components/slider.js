@@ -4,14 +4,15 @@ import './slider.scss';
 
 export default class Slider extends Component {
   initState () {
-    const { Constructor } = this.props;
+    const { sliderState, Constructor } = this.props;
     this.state = {
+      sliderState,
       Constructor
     };
   }
 
   getTemplate () {
-    const { sliderState } = this.props;
+    const { sliderState } = this.state;
 
     return `
       <div class="slider__container ${sliderState}">
@@ -29,10 +30,18 @@ export default class Slider extends Component {
     new Constructor($container, innerProps);
   }
 
-  // custom
+  setEventListener () {
+    const $container = _.$('.slider__container');
+    $container.addEventListener('animationend', () => {
+      $container.classList.remove('open');
+    })
+  }
+
+  // custom method
   changeInnerContent (Constructor) {
     return () => {
-      this.setState({ Constructor });
+      const sliderState = _.$('.slider__container').classList[1];
+      this.setState({ Constructor, sliderState });
     };
   }
 }
