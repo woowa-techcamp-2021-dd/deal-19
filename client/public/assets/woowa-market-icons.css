@@ -1,7 +1,7 @@
 @font-face {
   font-family: "woowa-market-icons";
-  src: url("./fonts/woowa-market-icons.woff2") format("woff2"),
-  url("./fonts/woowa-market-icons.woff") format("woff");
+  src: url("fonts/woowa-market-icons.woff2") format("woff2"),
+  url("fonts/woowa-market-icons.woff") format("woff");
 }
 
 [class^="wmi-"]::before,
