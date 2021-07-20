@@ -71,6 +71,15 @@ export default class EditorForm extends Component {
   }
 
   setEventListener () {
-    
+    const { send } = this.props;
+    const $form = _.$('form');
+    $form.addEventListener('submit', (e) => {
+      console.log(e);
+      // e.preventDefault();
+    });
+    this.addEventListener('click', '.button-add-image', () => {
+      const $inputImage = _.$('#input-image');
+      $inputImage.click();
+    });
   }
 }
