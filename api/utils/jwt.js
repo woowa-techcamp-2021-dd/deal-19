@@ -10,3 +10,9 @@ export const createToken = (option) => {
 
   return token;
 };
+
+export const decodeToken = (token) => {
+  const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+  return decoded;
+};
