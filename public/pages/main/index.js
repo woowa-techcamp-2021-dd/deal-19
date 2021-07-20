@@ -105,12 +105,6 @@ class App extends Component {
   removeSlider () {
     this.setState({ sliderState: 'none' });
   }
-
-  closeSlider () {
-    return () => {
-      this.setState({ sliderState: 'close' });
-    };
-  }
 }
 
 new App($root);
