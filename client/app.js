@@ -7,7 +7,7 @@ import webpack from 'webpack';
 
 import router from './routes/index.js';
 
-import config from './webpack.common.js';
+import config from './webpack.dev.js';
 import devServerMiddleware from './devServerMiddleware.js';
 
 const compiler = webpack(config);
@@ -20,13 +20,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname)));
 
 if (process.env.NODE_ENV === 'development') {
   app.use(webpackDevMiddleware(compiler, {
     publicPath: config.output.publicPath
   }));
   app.use(devServerMiddleware(compiler));
+} else {
+  app.use(express.static(path.join(__dirname, '/dist')));
 }
 
 app.use('/', router);

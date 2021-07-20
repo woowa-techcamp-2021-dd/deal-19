@@ -17,7 +17,6 @@ export default {
   output: {
     filename: '[name]/[name].bundle.js',
     path: path.resolve(__dirname, 'dist/'),
-    publicPath: 'dist/',
     clean: true
   },
   module: {
@@ -48,17 +47,10 @@ export default {
       {
         test: /\.(svg|png|ico|jpg|jpeg)$/,
         loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-        }
       },
       {
         test: /\.(woff|woff2|otf|ttf)$/,
         loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-          publicPath: '../'
-        }
       }
     ]
   },
