@@ -3,10 +3,8 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const __dirname = path.resolve();
-const PORT = process.env.PORT || 8080;
 
 export default {
-  mode: 'development',
   target: 'web',
   entry: {
     main: './public/pages/main/index.js',
@@ -19,9 +17,9 @@ export default {
   output: {
     filename: '[name]/[name].bundle.js',
     path: path.resolve(__dirname, 'dist/'),
-    publicPath: '/dist'
+    publicPath: 'dist/',
+    clean: true
   },
-  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -48,8 +46,19 @@ export default {
         }
       },
       {
-        test: /\.(woff|woff2|otf|ttf|svg|png|ico)$/,
-        loader: 'file-loader'
+        test: /\.(svg|png|ico|jpg|jpeg)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+        }
+      },
+      {
+        test: /\.(woff|woff2|otf|ttf)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          publicPath: '../'
+        }
       }
     ]
   },
@@ -60,36 +69,38 @@ export default {
     new HtmlWebpackPlugin({
       filename: 'main/index.html',
       template: 'public/pages/main/index.html',
-      chunks: ['main']
+      chunks: ['main'],
+      favicon: 'public/assets/favicon.png'
     }),
     new HtmlWebpackPlugin({
       filename: 'editor/index.html',
       template: 'public/pages/editor/index.html',
-      chunks: ['editor']
+      chunks: ['editor'],
+      favicon: 'public/assets/favicon.png'
     }),
     new HtmlWebpackPlugin({
       filename: 'productDetail/index.html',
       template: 'public/pages/productDetail/index.html',
-      chunks: ['productDetail']
+      chunks: ['productDetail'],
+      favicon: 'public/assets/favicon.png'
     }),
     new HtmlWebpackPlugin({
       filename: 'chatList/index.html',
       template: 'public/pages/chatList/index.html',
-      chunks: ['chatList']
+      chunks: ['chatList'],
+      favicon: 'public/assets/favicon.png'
     }),
     new HtmlWebpackPlugin({
       filename: 'chatDetail/index.html',
       template: 'public/pages/chatDetail/index.html',
-      chunks: ['chatDetail']
+      chunks: ['chatDetail'],
+      favicon: 'public/assets/favicon.png'
     }),
     new HtmlWebpackPlugin({
       filename: 'location/index.html',
       template: 'public/pages/location/index.html',
-      chunks: ['location']
+      chunks: ['location'],
+      favicon: 'public/assets/favicon.png'
     })
-  ],
-  devServer: {
-    contentBase: 'dist',
-    port: PORT
-  }
+  ]
 };

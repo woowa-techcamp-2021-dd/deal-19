@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import errorGenerator from './errorGenerator.js';
+import errorGenerator from '../utils/errorGenerator.js';
 
 async function validateAuth (req, res, next) {
   try {
