@@ -25,12 +25,15 @@ export default class Login extends Component {
 
   mountChildren () {
     const { tab } = this.state;
+    const { closeSlider } = this.props;
 
     const $header = _.$('#menu__header');
     const $tabbar = _.$('#menu__tabbar');
     const $main = _.$('.menu__content');
 
-    new Header($header, { title: '메뉴' });
+    console.log('close :', closeSlider);
+
+    new Header($header, { title: '메뉴', closeSlider });
     new TabBar($tabbar, {
       current: tab,
       tabList: [
