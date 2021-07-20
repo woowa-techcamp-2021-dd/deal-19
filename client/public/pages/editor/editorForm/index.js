@@ -65,6 +65,11 @@ export default class EditorForm extends Component {
     const { onChangeInput } = this.props;
     this.addEventListener('change', '.input-area', ({target}) => {
       const {name, value} = target;
+      if(name === 'price'){
+        const price = convertStrToNum(value);
+        onChangeInput({[name]: price});
+        return;
+      }
       onChangeInput({[name]: value})
     });
   }
@@ -72,4 +77,8 @@ export default class EditorForm extends Component {
 
 const addCommaToPrice = (price) => {
   return price.toLocaleString()
+}
+
+const convertStrToNum = (price) => {
+  return Number(price.replace(',', ''))
 }
