@@ -1,7 +1,7 @@
 import express from 'express';
 import { query } from '../../model/db.js';
 import errorGenerator from '../../utils/errorGenerator.js';
-import validateAuth from '../../utils/validateAuth.js';
+import validateAuth from '../../middlewares/validateAuth.js';
 
 const router = express.Router();
 

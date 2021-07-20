@@ -4,12 +4,10 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpack from 'webpack';
-import './env.js';
 
 import router from './routes/index.js';
-import api from './api/index.js';
 
-import config from './webpack.config.js';
+import config from './webpack.common.js';
 import devServerMiddleware from './devServerMiddleware.js';
 
 const compiler = webpack(config);
@@ -32,7 +30,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/', router);
-app.use('/api', api);
 
 app.all('*', (req, res) => {
   res.status(400).send('404');
