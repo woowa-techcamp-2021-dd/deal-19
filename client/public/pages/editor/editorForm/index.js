@@ -45,7 +45,7 @@ export default class EditorForm extends Component {
         .join("")}</div>
       </div>
       <div class="write__price content-box">
-        <input id="input-price" class="input-area" type="text" name="price" value="${addCommaToPrice(
+        <input id="input-price" class="input-area" type="text" name="price" value="${toCommaString(
         price
       )}" />
       </div>
@@ -66,8 +66,7 @@ export default class EditorForm extends Component {
     this.addEventListener('change', '.input-area', ({target}) => {
       const {name, value} = target;
       if(name === 'price'){
-        const price = convertStrToNum(value);
-        onChangeInput({[name]: price});
+        onChangeInput({[name]: toString(value)});
         return;
       }
       onChangeInput({[name]: value})
@@ -75,10 +74,10 @@ export default class EditorForm extends Component {
   }
 }
 
-const addCommaToPrice = (price) => {
-  return price.toLocaleString()
+const toCommaString= (price) => {
+  return Number(price).toLocaleString()
 }
 
-const convertStrToNum = (price) => {
-  return Number(price.replace(',', ''))
+const toString = (price) => {
+  return price.replace(/,/g, '')
 }
