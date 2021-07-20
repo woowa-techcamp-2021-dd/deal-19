@@ -1,5 +1,5 @@
 import Component from '../../../core/component.js';
-import _ from '../../../utils/dom.js';
+import parsePrice from '../../../utils/parsePrice.js';
 import './style.scss';
 
 export default class EditorForm extends Component {
@@ -31,21 +31,21 @@ export default class EditorForm extends Component {
         <input class="input-area" id="input-name" type="text" value="${name}" name="name" >
       </div>
       <div class="category">${
-        category.id === "" ? "(필수) 카테고리를 선택해주세요." : category.title
+        category.id === '' ? '(필수) 카테고리를 선택해주세요.' : category.title
       }</div>
       <div class="carousel">
       ${categoryList
         .map(
           ({ title, id }) =>
             `<div class="category-item">
-            <input class="input-area" type="radio" id="category-${id}" name="category" value="${id}">
+            <input class="input-area" type="radio" id="category-${id}" name="category" value="${title}" data-id="${id}">
             <label for="category-${id}">${title}</label>
           </div>`
         )
         .join('')}</div>
       </div>
       <div class="write__price content-box">
-        <input id="input-price" class="input-area" type="text" name="price" value="${toCommaString(
+        <input id="input-price" class="input-area" type="text" name="price" value="${parsePrice(
         price
       )}" />
       </div>
@@ -63,21 +63,22 @@ export default class EditorForm extends Component {
 
   setEventListener () {
     const { onChangeInput } = this.props;
-    this.addEventListener('change', '.input-area', ({target}) => {
-      const {name, value} = target;
-      if(name === 'price'){
-        onChangeInput({[name]: toString(value)});
+    this.addEventListener('change', '.input-area', ({ target }) => {
+      const { name, value } = target;
+      if (name === 'price') {
+        onChangeInput({ [name]: toNumber(value) });
         return;
       }
-      onChangeInput({[name]: value})
+      if (name === 'category') {
+        const id = target.dataset.id;
+        onChangeInput({ [name]: { id, title: value } });
+        return;
+      }
+      onChangeInput({ [name]: value });
     });
   }
 }
 
-const toCommaString= (price) => {
-  return Number(price).toLocaleString()
-}
-
-const toString = (price) => {
-  return price.replace(/,/g, '')
-}
+const toNumber = (price) => {
+  return Number(price.replace(/,/g, ''));
+};
