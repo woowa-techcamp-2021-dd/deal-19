@@ -74,7 +74,7 @@ export default class Header extends Component {
 
   setRightIconHandler (handler) {
     const { type } = this.props;
-    const $rightIcon = _.$(`.header__right-box.${type} > div`);
+    const $rightIcon = _.$(`.header__right-box.${type}`);
     $rightIcon.addEventListener('click', handler);
   }
 }
@@ -97,7 +97,7 @@ const renderHeaderRight = (type) => {
     case 'main':
       return `<div class="wmi-user header__my-account ${type}"></div><div class="wmi-menu header__menu ${type}"></div>`;
     case 'write':
-      return '<div class="wmi-check"></div>';
+      return '<button form="editor__form"><div class="wmi-check"></div></button>';
     default :
       return '';
   }
