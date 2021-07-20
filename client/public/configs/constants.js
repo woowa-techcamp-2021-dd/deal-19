@@ -62,3 +62,4 @@ export const PRODUCT_STATUS = {
   RESERVED: 'reserved',
   ONSALE: 'onslae'
 };
+

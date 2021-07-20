@@ -3,12 +3,13 @@ import Component from '../../core/component.js';
 import _ from '../../utils/dom.js';
 import Header from '../../components/header.js';
 import EditorForm from './editorForm/index.js';
+import { EDITOR_STATE } from '../../configs/constants.js';
 
 const $root = document.querySelector('#root');
 
 class App extends Component {
   initState () {
-    this.state = { location: '역삼동' };
+    this.state = EDITOR_STATE;
   }
 
   getTemplate () {
@@ -19,8 +20,7 @@ class App extends Component {
   }
 
   mountChildren () {
-    const { requestAddPosting } = this;
-    const { location } = this.state;
+    const { requestAddPosting, onChangeInput } = this;
 
     const $header = _.$('#main__header');
     const $contens = _.$('#main__contents');
@@ -31,11 +31,18 @@ class App extends Component {
       handlerClickRightIcon: requestAddPosting.bind(this)
     });
 
-    new EditorForm($contens, { location });
+    new EditorForm($contens, { ...this.state, onChangeInput: onChangeInput.bind(this) });
   }
 
   requestAddPosting () {
-    console.log('글쓰기 요청');
+    const state = this.state;
+    console.log(`state : ${state}`);
+  }
+
+  onChangeInput (newContents) {
+    this.setState(newContents);
+    console.log(this.state)
+    console.log('변경');
   }
 
   setEventListener () {}

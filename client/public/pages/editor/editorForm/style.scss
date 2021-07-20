@@ -1,5 +1,3 @@
-@import '../../../configs/globalStyle.scss';
-
 .write__container{
   display: flex;
   flex-direction: column;
@@ -31,18 +29,54 @@
   }
 }
 
+.button-add-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--gray3-color);
+  margin-right: 16px;
+  background: var(--off-white-color);
+  cursor: pointer;
+
+  & > div + div{
+    margin-top: 8px;
+  }
+}
+
 .image-box {
   width: 76px;
   height: 76px;
   border-radius: 10px;
-  overflow: hidden;
+}
+
+
+.image-added {
+  position: relative;
+  & > .wmi-close {
+    position: absolute;
+    top:- 15px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 99px;
+    background: var(--title-color);
+    color: var(--white-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   
-  &.image-added {
-    &>img {
+  & > figure {
+    overflow: hidden;
+    width: 100%;
+    border-radius: 10px;
+    & > img {
       width: 100%;
     }
-  }
+  }  
 }
+
 
 .write__info {
   & > h2 {
@@ -84,6 +118,9 @@
   border-top: 1px solid var(--gary3-color);
 }
 
+#input-name {
+  margin-bottom: 16px;
+}
 
 #input-image {
   position: absolute;
