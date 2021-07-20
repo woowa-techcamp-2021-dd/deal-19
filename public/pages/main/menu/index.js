@@ -8,7 +8,7 @@ import { productList, sellProductList } from '../../../configs/mock.data.js';
 
 import './style.scss';
 
-export default class Login extends Component {
+export default class Menu extends Component {
   initState () {
     this.state = {
       tab: 'sell'
@@ -30,8 +30,6 @@ export default class Login extends Component {
     const $header = _.$('#menu__header');
     const $tabbar = _.$('#menu__tabbar');
     const $main = _.$('.menu__content');
-
-    console.log('close :', closeSlider);
 
     new Header($header, { title: '메뉴', closeSlider });
     new TabBar($tabbar, {
