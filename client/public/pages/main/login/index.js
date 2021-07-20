@@ -39,8 +39,6 @@ export default class Login extends Component {
   }
 
   mountChildren () {
-    const { closeSlider } = this.props;
-
     const $header = _.$('#login__header');
     new Header($header, { title: '로그인' });
   }
