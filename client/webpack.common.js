@@ -62,37 +62,37 @@ export default {
       filename: 'main/index.html',
       template: 'public/pages/main/index.html',
       chunks: ['main'],
-      favicon: 'public/assets/favicon.png'
+      favicon: 'public/assets/favicon.ico'
     }),
     new HtmlWebpackPlugin({
       filename: 'editor/index.html',
       template: 'public/pages/editor/index.html',
       chunks: ['editor'],
-      favicon: 'public/assets/favicon.png'
+      favicon: 'public/assets/favicon.ico'
     }),
     new HtmlWebpackPlugin({
       filename: 'productDetail/index.html',
       template: 'public/pages/productDetail/index.html',
       chunks: ['productDetail'],
-      favicon: 'public/assets/favicon.png'
+      favicon: 'public/assets/favicon.ico'
     }),
     new HtmlWebpackPlugin({
       filename: 'chatList/index.html',
       template: 'public/pages/chatList/index.html',
       chunks: ['chatList'],
-      favicon: 'public/assets/favicon.png'
+      favicon: 'public/assets/favicon.ico'
     }),
     new HtmlWebpackPlugin({
       filename: 'chatDetail/index.html',
       template: 'public/pages/chatDetail/index.html',
       chunks: ['chatDetail'],
-      favicon: 'public/assets/favicon.png'
+      favicon: 'public/assets/favicon.ico'
     }),
     new HtmlWebpackPlugin({
       filename: 'location/index.html',
       template: 'public/pages/location/index.html',
       chunks: ['location'],
-      favicon: 'public/assets/favicon.png'
+      favicon: 'public/assets/favicon.ico'
     })
   ]
 };
