@@ -3,6 +3,7 @@ import _ from '../../utils/dom.js';
 import Header from '../../components/header.js';
 import ProductList from '../../components/list.js';
 import FAB from './fab/index.js';
+
 import './style.scss';
 import { productList } from '../../configs/mock.data.js';
 import Slider from '../../components/slider.js';
@@ -103,6 +104,12 @@ class App extends Component {
 
   removeSlider () {
     this.setState({ sliderState: 'none' });
+  }
+
+  closeSlider () {
+    return () => {
+      this.setState({ sliderState: 'close' });
+    };
   }
 }
 

@@ -3,6 +3,13 @@ import _ from '../utils/dom.js';
 import './slider.scss';
 
 export default class Slider extends Component {
+  initState () {
+    const { Constructor } = this.props;
+    this.state = {
+      Constructor
+    };
+  }
+
   getTemplate () {
     const { sliderState } = this.props;
 
@@ -13,9 +20,17 @@ export default class Slider extends Component {
   }
 
   mountChildren () {
-    const { Constructor, innerProps } = this.props;
+    const { Constructor } = this.state;
+    const { innerProps } = this.props;
+
+    innerProps.changeInnerContent = this.changeInnerContent;
 
     const $container = _.$('.slider__container');
     new Constructor($container, innerProps);
+  }
+
+  // custom
+  changeInnerContent (Constructor) {
+    this.setState({ Constructor });
   }
 }
