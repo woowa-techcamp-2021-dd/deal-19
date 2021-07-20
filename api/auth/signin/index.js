@@ -67,13 +67,19 @@ router.post('/', async (req, res, next) => {
     console.log(err);
     switch (err.code) {
       case 'req/missing-body':
-        res.status(400).json({});
+        res.status(400).json({
+          message: '아이디를 입력해주세요'
+        });
         break;
       case 'auth/user-not-found':
-        res.status(404).json({});
+        res.status(404).json({
+          message: '계정을 찾을 수 없습니다'
+        });
         break;
       default:
-        res.status(500).json({});
+        res.status(500).json({
+          message: '다시 시도해주세요'
+        });
     }
   }
 });
