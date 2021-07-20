@@ -12,11 +12,4 @@ export default class FAB extends Component {
       </a>
     `;
   }
-
-  setEventListener () {
-    this.addEventListener('click', '.fab__container', () => {
-      console.log('click fab');
-      location.href=''
-    });
-  }
 }

@@ -23,7 +23,7 @@ export default class EditorForm extends Component {
                   <div class="wmi-close button-delete-image"></div>
                 </div>`
             )
-            .join("")}
+            .join('')}
         </div>
       </div>
       <div class="write__info content-box">
@@ -42,7 +42,7 @@ export default class EditorForm extends Component {
             <label for="category-${id}">${title}</label>
           </div>`
         )
-        .join("")}</div>
+        .join('')}</div>
       </div>
       <div class="write__price content-box">
         <input id="input-price" class="input-area" type="text" name="price" value="${toCommaString(
