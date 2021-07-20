@@ -2,6 +2,7 @@ import Component from '../../../core/component.js';
 import _ from '../../../utils/dom.js';
 import Header from '../../../components/header.js';
 import Register from '../register/index.js';
+import MyPage from '../myPage/index.js';
 
 import request from '../../../utils/fetchWrapper.js';
 
@@ -41,7 +42,7 @@ export default class Login extends Component {
     const { closeSlider } = this.props;
 
     const $header = _.$('#login__header');
-    new Header($header, { title: '로그인', closeSlider });
+    new Header($header, { title: '로그인' });
   }
 
   setEventListener () {
@@ -49,6 +50,14 @@ export default class Login extends Component {
 
     this.addEventListener('click', '#submit', this.handleSubmit.bind(this));
     this.addEventListener('click', '#register', changeInnerContent(Register));
+  }
+
+  didMount () {
+    const { changeInnerContent } = this.props;
+    const token = window.localStorage.getItem('accessToken');
+    if (token) {
+      changeInnerContent(MyPage)();
+    }
   }
 
   // custom method

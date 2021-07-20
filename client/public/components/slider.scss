@@ -1,16 +1,16 @@
 .slider__container {
   width: 100%;
-  z-index: 30;
+	height: 650px;
   background: var(--white-color);
+
 	&.open {
-		animation: open 1s forwards;
+		animation: open 0.2s forwards;
 	}
 	&.close {
-		animation: close 1s forwards;
+		animation: close 0.2s forwards;
 	}
-  // animation-duration: 1s;
-  // animation: easeOutBounce 1s forwards;
 }
+
 @keyframes close {
 	0% {
 		transform: translateX(0%);
