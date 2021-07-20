@@ -41,7 +41,7 @@ export default class Slider extends Component {
   changeInnerContent (Constructor) {
     return () => {
       const sliderState = _.$('.slider__container').classList[1];
-      this.setState({ Constructor, sliderState: _.$('.slider__container').classList[1] });
+      this.setState({ Constructor, sliderState });
     };
   }
 }

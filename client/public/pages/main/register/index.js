@@ -161,8 +161,6 @@ export default class Register extends Component {
     const $button = _.$('#submit');
     $button.setAttribute('disabled', true);
 
-    console.log(id, town);
-
     request(SIGN_UP_ENDPOINT, 'POST', {
       body: JSON.stringify({ id, town }),
       headers: {
