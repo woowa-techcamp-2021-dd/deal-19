@@ -33,8 +33,8 @@ export default class Header extends Component {
     const { type, handlerClickRightIcon, closeSlider } = this.props;
 
     const $left = _.$(`.header__left-box.${type}`);
-    if (type && !['main', 'write', 'detail', 'chat'].includes(type)) {
-      throw new Error('정확한 타입 지정 & 아예 쓰지 말 것');
+    if (type && !['main', 'write', 'detail'].includes(type)) {
+      throw new Error('정확한 타입 지정 || 아예 쓰지 말 것');
     }
 
     if (type === 'main') {
@@ -42,17 +42,15 @@ export default class Header extends Component {
       return;
     }
     if (handlerClickRightIcon) {
-      if (!['write', 'detail', 'chat'].includes(type)) {
-        throw new Error('우측 아이콘 핸들러는 write, detail, chat 중 하나의 타입에서만 가능합니다.');
+      if (!['write', 'detail'].includes(type)) {
+        throw new Error('우측 아이콘 핸들러는 write, detail 중 하나의 타입에서만 등록 가능합니다.');
       }
       this.setRightIconHandler(handlerClickRightIcon);
     }
 
     $left.addEventListener('click', () => {
-      console.log(1);
       if (closeSlider) {
         closeSlider();
-        console.log('슬라이더 닫기');
         return;
       }
       moveToPrevPage();
@@ -60,30 +58,24 @@ export default class Header extends Component {
   }
 
   setMainHeaderHandler () {
-    const { showLocation } = this;
     const { openSlider, type } = this.props;
 
     _.$(`.header__left-box.${type}`).addEventListener('click', () => {
       openSlider('category');
     });
-    _.$(`.header__title.${type}`).addEventListener('click', showLocation);
+
     _.$(`.header__my-account.${type}`).addEventListener('click', () => {
       openSlider('myPage');
     });
     _.$(`.header__menu.${type}`).addEventListener('click', () => {
-      openSlider('myMenu');
+      openSlider('menu');
     });
   }
 
   setRightIconHandler (handler) {
     const { type } = this.props;
-    if (type === 'detail') return;
-    const $rightIcon = _.$(`.header__right-box.${type} > div`);
+    const $rightIcon = _.$(`.header__right-box.${type}`);
     $rightIcon.addEventListener('click', handler);
-  }
-
-  showLocation () {
-    console.log('동네 보여주기');
   }
 }
 
@@ -105,9 +97,7 @@ const renderHeaderRight = (type) => {
     case 'main':
       return `<div class="wmi-user header__my-account ${type}"></div><div class="wmi-menu header__menu ${type}"></div>`;
     case 'write':
-      return '<div class="wmi-check"></div>';
-    case 'chat':
-      return '<div class="wmi-log-out"></div>';
+      return '<button form="editor__form"><div class="wmi-check"></div></button>';
     default :
       return '';
   }
