@@ -23,7 +23,7 @@ export default class Slider extends Component {
     const { Constructor } = this.state;
     const { innerProps } = this.props;
 
-    innerProps.changeInnerContent = this.changeInnerContent;
+    innerProps.changeInnerContent = this.changeInnerContent.bind(this);
 
     const $container = _.$('.slider__container');
     new Constructor($container, innerProps);
@@ -31,6 +31,8 @@ export default class Slider extends Component {
 
   // custom
   changeInnerContent (Constructor) {
-    this.setState({ Constructor });
+    return () => {
+      this.setState({ Constructor });
+    };
   }
 }

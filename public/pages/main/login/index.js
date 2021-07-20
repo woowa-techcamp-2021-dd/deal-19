@@ -48,7 +48,7 @@ export default class Login extends Component {
     const { changeInnerContent } = this.props;
 
     this.addEventListener('click', '#submit', this.handleSubmit.bind(this));
-    this.addEventListener('click', '#register', changeInnerContent.bind(this, Register));
+    this.addEventListener('click', '#register', changeInnerContent(Register));
   }
 
   // custom method
