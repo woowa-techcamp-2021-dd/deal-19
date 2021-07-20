@@ -87,13 +87,19 @@ router.post('/', async (req, res, next) => {
     console.log(err);
     switch (err.code) {
       case 'req/missing-body':
-        res.status(400).json({});
+        res.status(400).json({
+          message: '올바른 정보를 입력해주세요'
+        });
         break;
       case 'auth/exisiting-id':
-        res.status(409).json({});
+        res.status(409).json({
+          message: '이미 등록된 아이디입니다'
+        });
         break;
       default:
-        res.status(500).json({});
+        res.status(500).json({
+          message: '다시 시도해주세요'
+        });
     }
   }
 });
