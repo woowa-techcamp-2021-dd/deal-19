@@ -4,7 +4,7 @@ import './style.scss';
 
 export default class EditorForm extends Component {
   getTemplate () {
-    const { imageList, name, category, categoryList, price, contents, location } = this.props;
+    const { imageList, name, category, categoryList, price, content, location } = this.props;
     return `
       <div class="write__image-list content-box">
         <input class="input-area" id="input-image" type="file" accept="img/*"  multiple />
@@ -50,7 +50,7 @@ export default class EditorForm extends Component {
       )}" />
       </div>
       <div class="write__contents content-box">
-        <textarea id="input-contents" name="contents" class="input-area">${contents}</textarea>
+        <textarea id="input-contents" name="contents" class="input-area">${content}</textarea>
       </div>
         <div class="write__footer" >
       <div >${location}</div>
