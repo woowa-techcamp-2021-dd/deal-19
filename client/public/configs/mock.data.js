@@ -135,6 +135,6 @@ export const EDITOR_STATE = {
   category: { id: '', title: '' },
   categoryList: categoryList,
   price: 169000,
-  contents: '어린시절 추억의 향수를 어쩌구 저쩌구',
+  content: '어린시절 추억의 향수를 어쩌구 저쩌구',
   location: '방이동'
 };
