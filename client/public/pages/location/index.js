@@ -17,7 +17,6 @@ export default class App extends Component {
 
   getTemplate () {
     const { isOpenModal, townList } = this.state;
-    console.log(townList);
     return `
       <div id="town__header"></div>
       <div id="town__contents">
@@ -67,20 +66,42 @@ export default class App extends Component {
       }
 
       if (classList.contains('adder')) {
-        console.log('open modal');
         this.setState({ isOpenModal: true });
         return;
       }
       console.log('이 동네로 메인 변경');
       // 동네 변경
     });
-    this.addEventListener('click', '.btn.location.active > .wmi-close', (e) => {
-      console.log('엑스');
+    this.addEventListener('click', '.btn.location > .wmi-close', (e) => {
+      const $li = e.target.closest('.btn.location');
+      const townId = $li.dataset.id;
+      this.deleteTown(townId);
       // 이 동네 지우기 요청
 
       // 지우고 난 후에 동네가 0개라면 동네 추가 모달 띄우기
 
       // 지워도 하나 남아있다면 그 동네를 메인으로 바꾸기
+    });
+  }
+
+  deleteTown (townId) {
+    const accessToken = localStorage.getItem('accessToken');
+    request(TOWN_ENDPOINT, 'DELETE', {
+      body: JSON.stringify({
+        townId
+      }),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      const { townId } = res;
+      const { townList } = this.state;
+      const newTownList = activatedTownList(removeTown(townList, townId));
+      this.setState({ townList: newTownList, isOpenModal: !newTownList.length });
+    }).catch(errorMessage => {
+      console.log('err??');
+      this.setState({ errorMessage });
     });
   }
 
@@ -99,9 +120,10 @@ export default class App extends Component {
       }
     }).then((result) => {
       const { id, name } = result;
-      this.setState({ townList: [...townList, { id, name }] });
-    }).catch((err) => {
-      this.setState({ errorMessage: err });
+      const newTownList = activatedTownList([...townList, { id, name, isActive: false }]);
+      this.setState({ townList: newTownList });
+    }).catch((errorMessage) => {
+      this.setState({ errorMessage });
     }).finally(() => {
       this.setState({ isOpenModal: false });
     });
@@ -113,5 +135,16 @@ export default class App extends Component {
 
   didMount () {}
 }
+const removeTown = (townList, townId) => townList.filter(town => town.id !== townId);
+const activatedTownList = townList => {
+  if (!townList.length) return [];
+  const filterd = townList.filter(town => town.isActive);
+  if (filterd.length) {
+    return townList;
+  } else {
+    townList[0].isActive = true;
+    return townList;
+  }
+};
 
 new App($root);
