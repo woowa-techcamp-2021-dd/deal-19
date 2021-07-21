@@ -75,6 +75,7 @@ export default class App extends Component {
       }
       this.selectActiveTown($li.dataset.id);
     });
+
     this.addEventListener('click', '.btn.location > .wmi-close', (e) => {
       const $li = e.target.closest('.btn.location');
       const townId = $li.dataset.id;
@@ -105,6 +106,7 @@ export default class App extends Component {
       }
     }).then(res => {
       const { townId } = res;
+
       const { townList } = this.state;
       const newTownList = activatedTownList(removeTown(townList, townId));
       this.setState({ townList: newTownList, isOpenModal: !newTownList.length });
@@ -145,16 +147,18 @@ export default class App extends Component {
   didMount () {}
 }
 
-const removeTown = (townList, townId) => townList.filter(town => town.id !== townId);
+const removeTown = (townList, townId) => {
+  return townList.filter(town => {
+    return town.id !== townId;
+  });
+};
 const activatedTownList = townList => {
   if (!townList.length) return [];
   const filterd = townList.filter(town => town.isActive);
   if (filterd.length) {
-    console.log(townList);
     return townList;
   } else {
     townList[0].isActive = true;
-    console.log(townList);
     return townList;
   }
 };
