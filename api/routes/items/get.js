@@ -1,7 +1,9 @@
 import express from 'express';
-import { query } from '../../model/db.js';
+import pool, { queryAll } from '../../model/db.js';
 import errorGenerator from '../../utils/errorGenerator.js';
 import validateAuth from '../../middlewares/validateAuth.js';
+
+import { decodeToken } from '../../utils/jwt.js';
 
 const router = express.Router();
 
@@ -17,24 +19,99 @@ router.get('/', validateAuth, async (req, res, next) => {
       throw error;
     }
 
-    // TODO: access token 해독
+    const token = req.headers.authorization.split('Bearer ')[1];
+    const { uid } = decodeToken(token);
 
-    const sql = QUERYS[type](category);
+    const connection = await pool.getConnection(async conn => conn);
 
-    const items = await query(sql);
-    console.log(items);
+    let sql = `
+      SELECT
+        PRODUCT.ID AS id,
+        PRODUCT.name AS name,
+        PRODUCT.timecreated AS timeCreated,
+        PRODUCT.price AS price,
+        PRODUCT.USER_UID AS userId,
+        TOWN.name AS town,
+        (SELECT
+        image_url
+      FROM PRODUCT_IMAGES
+      WHERE
+        PRODUCT_ID = PRODUCT.ID
+      ORDER BY timecreated ASC
+      LIMIT 1
+      ) AS thumbnail,
+      (SELECT
+        COUNT(*)
+      FROM LIKE_LIST
+      WHERE
+        PRODUCT_ID = PRODUCT.ID
+      ) AS likeCount,
+      (SELECT
+        USER_UID
+      FROM LIKE_LIST
+        WHERE (
+        USER_UID = ${uid} AND PRODUCT_ID = PRODUCT.ID
+        )
+      ) AS isLiked
+      FROM PRODUCT
+      LEFT JOIN TOWN
+        ON PRODUCT.TOWN_ID = TOWN.ID
+    `;
 
-    const productList = {
-      id: '',
-      name: '',
-      town: '',
-      timeCreated: '',
-      price: '',
-      isLiked: '',
-      isOwner: true,
-      likeCount: '',
-      thumbnail: ''
-    };
+    if (type === 'town') {
+      sql += `
+        WHERE
+          TOWN_ID = (
+            SELECT 
+              TOWN_ID 
+            FROM TOWN_LIST 
+              WHERE USER_UID = (
+                ${uid}
+                AND is_active=true
+                AND PRODUCT.status = 'onsale'
+                ${
+                  category
+                  ? `AND PRODUCT.category = '${category}'`
+                  : ''
+                }
+              )
+          )
+      `;
+    }
+
+    if (type === 'sale') {
+      sql += `
+        WHERE
+          PRODUCT.USER_UID = ${uid}
+      `;
+    }
+
+    if (type === 'liked') {
+      sql += `
+        INNER JOIN LIKE_LIST
+          ON LIKE_LIST.PRODUCT_ID = PRODUCT.ID
+        WHERE
+          LIKE_LIST.USER_UID = ${uid}
+      `;
+    }
+
+    const productsSnapshot = await queryAll(connection, sql);
+
+    const productList = [];
+
+    productsSnapshot.data.forEach((product) => {
+      productList.push({
+        id: product.id,
+        name: product.name,
+        town: product.town,
+        timeCreated: product.timeCreated,
+        price: product.price,
+        isLiked: Boolean(product.isLiked),
+        isOwner: product.userId === uid,
+        likeCount: product.likeCount,
+        thumbnail: product.thumbnail
+      });
+    });
 
     res.status(200).json({ productList });
   } catch (err) {
@@ -48,18 +125,5 @@ router.get('/', validateAuth, async (req, res, next) => {
     }
   }
 });
-
-const QUERYS = {
-  town: (category) => {
-    // 무언가 다른 일도 함;
-    return '';
-  },
-  sale: (category) => {
-    return '';
-  },
-  liked: (category) => {
-    return '';
-  }
-};
 
 export default router;
