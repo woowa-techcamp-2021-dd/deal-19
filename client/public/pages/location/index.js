@@ -57,31 +57,40 @@ export default class App extends Component {
     }
   }
 
-  // active된거 본체 누를때 / active 된거 x 누를 때 / not active 누를 때  / + 누를 때
   setEventListener () {
     this.addEventListener('click', '.btn.location', (e) => {
       const classList = e.target.classList;
-      if (classList.contains('wmi-close') || classList.contains('active')) {
+      if (classList.contains('wmi-close')) {
         return;
       }
-
       if (classList.contains('adder')) {
         this.setState({ isOpenModal: true });
         return;
       }
-      console.log('이 동네로 메인 변경');
-      // 동네 변경
+
+      const $li = e.target.closest('.btn.location');
+
+      if ($li.classList.contains('active')) {
+        return;
+      }
+      this.selectActiveTown($li.dataset.id);
     });
     this.addEventListener('click', '.btn.location > .wmi-close', (e) => {
       const $li = e.target.closest('.btn.location');
       const townId = $li.dataset.id;
       this.deleteTown(townId);
-      // 이 동네 지우기 요청
-
-      // 지우고 난 후에 동네가 0개라면 동네 추가 모달 띄우기
-
-      // 지워도 하나 남아있다면 그 동네를 메인으로 바꾸기
     });
+  }
+
+  selectActiveTown (townId) {
+    const { townList } = this.state;
+    const switchActiveTown = townList.map(town => {
+      town.isActive = false;
+      if (town.id === townId) town.isActive = true;
+      return town;
+    }
+    );
+    this.setState({ townList: switchActiveTown });
   }
 
   deleteTown (townId) {
@@ -135,14 +144,17 @@ export default class App extends Component {
 
   didMount () {}
 }
+
 const removeTown = (townList, townId) => townList.filter(town => town.id !== townId);
 const activatedTownList = townList => {
   if (!townList.length) return [];
   const filterd = townList.filter(town => town.isActive);
   if (filterd.length) {
+    console.log(townList);
     return townList;
   } else {
     townList[0].isActive = true;
+    console.log(townList);
     return townList;
   }
 };
