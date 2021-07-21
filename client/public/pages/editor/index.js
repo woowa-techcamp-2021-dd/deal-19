@@ -3,19 +3,23 @@ import Component from '../../core/component.js';
 import _ from '../../utils/dom.js';
 import Header from '../../components/header.js';
 import EditorForm from './editorForm/index.js';
-import { EDITOR_STATE } from '../../configs/constants.js';
+import { EDITOR_STATE } from '../../configs/mock.data.js';
+import { ITEMS_ENDPOINT } from '../../configs/endpoints.js';
+import request from '../../utils/fetchWrapper.js';
 
 const $root = document.querySelector('#root');
 
 class App extends Component {
   initState () {
-    this.state = EDITOR_STATE;
+    this.state = { ...EDITOR_STATE, errorMessage: '' };
   }
 
   getTemplate () {
+    const { errorMessage } = this.state;
     return `
         <div id="main__header"></div>
         <div id="main__contents"></div>
+        ${errorMessage ? '<div>에러 모달</div>' : ''}
     `;
   }
 
@@ -35,14 +39,29 @@ class App extends Component {
   }
 
   requestAddPosting () {
-    const state = this.state;
-    console.log(`state : ${state}`);
+    const { name, content, category, price } = this.state;
+    const accessToken = localStorage.getItem('accessToken');
+
+    request(ITEMS_ENDPOINT, 'POST', {
+      body: JSON.stringify({
+        name, category, price, content
+      }),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      console.log('response :', response);
+      window.location.href = '/productDetail';
+    }).catch((err) => {
+      this.state({ errorMessage: err });
+    }).finally(() => {
+      // finally
+    });
   }
 
   onChangeInput (newContents) {
     this.setState(newContents);
-    console.log(this.state)
-    console.log('변경');
   }
 
   setEventListener () {}

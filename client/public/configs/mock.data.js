@@ -1,4 +1,4 @@
-import {categoryList} from './constants.js'
+import { categoryList } from './constants.js';
 
 export const productList = [
   {
