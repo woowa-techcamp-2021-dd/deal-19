@@ -11,7 +11,15 @@ const $root = document.querySelector('#root');
 
 class App extends Component {
   initState () {
-    this.state = { ...EDITOR_STATE, errorMessage: '' };
+    this.state = {
+      imageList: [],
+      name: '',
+      category: { id: '', title: '' },
+      price: 0,
+      content: '',
+      location: '',
+      errorMessage: ''
+    };
   }
 
   getTemplate () {
@@ -58,6 +66,12 @@ class App extends Component {
     }).finally(() => {
       // finally
     });
+  }
+
+  didMount () {
+    const { imageList, name, category, categoryList, price, content, location } = EDITOR_STATE;
+
+    this.setState({ imageList, name, category, categoryList, price, content, location });
   }
 
   onChangeInput (newContents) {
