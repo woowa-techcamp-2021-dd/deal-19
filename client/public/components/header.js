@@ -6,11 +6,12 @@ import DropDown from '../components/dropdown.js';
 export default class Header extends Component {
   getTemplate () {
     const { type, title } = this.props;
+
     return `
-      <div class="header ${type}">
-        <div class="${type} header__left-box">${renderHeaderLeft(type)}</div>
-        <div class="${type} header__title">${title}</div>
-        <div class="${type} header__right-box">
+      <div class="header ${type ?? ''}">
+        <div class="${type ?? ''} header__left-box">${renderHeaderLeft(type ?? '')}</div>
+        <div class="${type ?? ''} header__title">${title}</div>
+        <div class="${type ?? ''} header__right-box">
           ${renderHeaderRight(type)}
         </div>
       </div>
