@@ -47,7 +47,12 @@ export default class Modal extends Component {
     const createConfirmAction = (action) => {
       return function () {
         if (action) {
-          action();
+          if (type === 'prompt') {
+            const townName = _.$('.input.full').value;
+            action(townName);
+          } else {
+            action();
+          }
         }
         this.closeModal();
       };
