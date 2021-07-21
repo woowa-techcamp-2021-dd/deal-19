@@ -26,16 +26,9 @@ router.get('/', validateAuth, async (req, res, next) => {
 
     const userSnapshot = await queryAll(connection, GET_TOWN_QUERY);
 
-    const towns = [];
-
-    userSnapshot.data.forEach((town, i) => {
+    const towns = userSnapshot.data.map((town) => {
       const { id, name, isActive } = town;
-
-      towns.push({
-        id,
-        name,
-        isActive
-      });
+      return { id, name, isActive };
     });
 
     res.status(200).json({
