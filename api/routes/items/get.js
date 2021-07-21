@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/', validateAuth, async (req, res, next) => {
   try {
-    const { type, category } = req.query;
+    const { type, category, town } = req.query;
     const TYPE = ['town', 'sale', 'liked'];
     if (!TYPE.includes(type)) {
       const error = errorGenerator(
@@ -61,21 +61,23 @@ router.get('/', validateAuth, async (req, res, next) => {
     if (type === 'town') {
       sql += `
         WHERE
-          TOWN_ID = (
+          TOWN_ID = 
+          ${town || `
+          (
             SELECT 
               TOWN_ID 
             FROM TOWN_LIST 
-              WHERE USER_UID = (
-                ${uid}
+              WHERE
+                USER_UID = ${uid}
                 AND is_active=true
-                AND PRODUCT.status = 'onsale'
-                ${
-                  category
-                  ? `AND PRODUCT.category = '${category}'`
-                  : ''
-                }
-              )
           )
+          `}
+          AND PRODUCT.status = 'onsale'
+          ${
+            category
+            ? `AND PRODUCT.category = '${category}'`
+            : ''
+          }
       `;
     }
 
@@ -97,10 +99,8 @@ router.get('/', validateAuth, async (req, res, next) => {
 
     const productsSnapshot = await queryAll(connection, sql);
 
-    const productList = [];
-
-    productsSnapshot.data.forEach((product) => {
-      productList.push({
+    const productList = productsSnapshot.data.map((product) => {
+      return {
         id: product.id,
         name: product.name,
         town: product.town,
@@ -110,7 +110,7 @@ router.get('/', validateAuth, async (req, res, next) => {
         isOwner: product.userId === uid,
         likeCount: product.likeCount,
         thumbnail: product.thumbnail
-      });
+      };
     });
 
     res.status(200).json({ productList });
