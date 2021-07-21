@@ -11,11 +11,21 @@ const $root = document.querySelector('#root');
 
 class App extends Component {
   initState () {
-    this.state = { ...EDITOR_STATE, errorMessage: '' };
+    this.state = {
+      imageList: [],
+      name: '',
+      category: { id: '', title: '' },
+      price: 0,
+      categoryList: [],
+      content: '',
+      location: '',
+      errorMessage: ''
+    };
   }
 
   getTemplate () {
     const { errorMessage } = this.state;
+
     return `
         <div id="main__header"></div>
         <div id="main__contents"></div>
@@ -44,20 +54,25 @@ class App extends Component {
 
     request(ITEMS_ENDPOINT, 'POST', {
       body: JSON.stringify({
-        name, category, price, content
+        name, categoryID: category.id, price, content
       }),
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
       }
     }).then((response) => {
-      console.log('response :', response);
       window.location.href = '/productDetail';
     }).catch((err) => {
-      this.state({ errorMessage: err });
+      this.setState({ errorMessage: err });
     }).finally(() => {
       // finally
     });
+  }
+
+  didMount () {
+    console.log('마운트 후 실행');
+    const { imageList, name, category, categoryList, price, content, location } = EDITOR_STATE;
+    this.setState({ imageList, name, category, categoryList, price, content, location }, true);
   }
 
   onChangeInput (newContents) {

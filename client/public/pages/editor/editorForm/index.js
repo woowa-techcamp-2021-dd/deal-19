@@ -50,7 +50,7 @@ export default class EditorForm extends Component {
       )}" />
       </div>
       <div class="write__contents content-box">
-        <textarea id="input-contents" name="contents" class="input-area">${content}</textarea>
+        <textarea id="input-contents" name="content" class="input-area">${content}</textarea>
       </div>
         <div class="write__footer" >
       <div >${location}</div>
