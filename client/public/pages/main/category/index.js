@@ -13,7 +13,7 @@ export default class Category extends Component {
           categoryList.map((category) => {
             const { title, id } = category;
             return (`
-              <button class="category__item" id="category-${id}">
+              <button class="category__item" data-category="${id}">
                 <figure class="img-box small">
                   <img src="">
                 </figure>
@@ -33,11 +33,14 @@ export default class Category extends Component {
   }
 
   setEventListener () {
+    const { action, closeSlider } = this.props;
+
     this.addEventListener('click', '.category__content', (e) => {
       const $categoryItem = e.target.closest('.category__item');
       if ($categoryItem) {
-        const id = $categoryItem.id;
-        console.log(id);
+        const category = $categoryItem.dataset.category;
+        action(category);
+        closeSlider();
       }
     });
   }
