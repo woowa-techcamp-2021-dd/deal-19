@@ -21,9 +21,9 @@ export default class Component {
 
   didMount () {}
 
-  setState (newState) {
+  setState (newState, isFromDidMount = false) {
     this.state = { ...this.state, ...newState };
-    this._render();
+    this._render(isFromDidMount);
   }
 
   addEventListener (eventType, selector, callback) {
@@ -41,13 +41,15 @@ export default class Component {
     this.setEventListener();
   }
 
-  _render () {
+  _render (isFromDidMount) {
     this.$target.innerHTML = '';
     this.$self = document.createElement('div');
     this.$target.append(this.$self);
     this.$self.outerHTML = this.getTemplate();
     this.mountChildren();
-    this.didMount();
+    if (!isFromDidMount) {
+      this.didMount();
+    }
   }
 
   _isTarget (target, children, selector) {
