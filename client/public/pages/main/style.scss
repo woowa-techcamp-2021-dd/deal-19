@@ -6,10 +6,31 @@
 #main__list {
   flex: 1;
   overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 #main__slider {
   position: absolute;
   width: 100%;
   z-index: 35;
+}
+
+.fab__container {
+  position: absolute;
+  z-index: 10;
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  background: var(--primary-color);
+  border: 2px solid var(--primary-light-color);
+
+  .wmi {
+    font-weight: var(--small-font-size);
+    color: var(--white-color);
+  }
 }
