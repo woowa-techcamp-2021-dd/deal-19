@@ -5,7 +5,7 @@ const router = express.Router();
 
 const __dirname = path.resolve();
 
-router.get('/', (req, res, next) => {
+router.get('/:pid', (req, res, next) => {
   res.sendFile(__dirname + '/dist/productDetail/index.html');
 });
 
