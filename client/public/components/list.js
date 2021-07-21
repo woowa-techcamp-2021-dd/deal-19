@@ -1,5 +1,8 @@
 import Component from '../core/component.js';
 
+import parsePrice from '../utils/parsePrice.js';
+import timeFromNow from '../utils/timeFromNow.js';
+
 import './list.scss';
 
 export default class ProductList extends Component {
@@ -11,25 +14,26 @@ export default class ProductList extends Component {
         ${
           productList.map((productItem) => {
             const {
+              id,
+              isLiked,
+              name,
               thumbnail,
-              title,
-              location,
-              timestamp,
+              timeCreated,
               price,
-              chatCount,
               likeCount,
-              isOwner
+              isOwner,
+              town
             } = productItem;
 
-            const time = new Date(timestamp).toLocaleDateString();
+            const time = timeFromNow(new Date(timeCreated).getTime());
 
             return `
-              <div class="product-item" data-link="${price}">
+              <div class="product-item" id="${id}">
                 <img class="thumbnail" src="${thumbnail || 'http://www-cdr.stanford.edu/~petrie/blank.gif'}" />
                 <div class="product-info">
-                  <h4>${title}</h4>
-                  <div class="location">${location} · ${time}</div>
-                  <div class="price">${price}원</div>
+                  <h4>${name}</h4>
+                  <div class="location">${town} · ${time}</div>
+                  <div class="price">${parsePrice(price)}원</div>
                 </div>
                 <button class="top-right-button">
                 ${
@@ -38,21 +42,11 @@ export default class ProductList extends Component {
                     <i class="wmi wmi-more-vertical"></i>
                   `
                   : `
-                    <i class="wmi wmi-heart"></i>
+                    <i class="wmi wmi-heart ${isLiked ? 'full' : ''}"></i>
                   `
                 }
                 </button>
                 <div class="count-wrapper">
-                ${
-                  chatCount > 0
-                    ? `
-                    <div class="count-box">
-                      <i class="wmi wmi-message-square"></i>
-                      ${chatCount}
-                    </div>
-                  `
-                  : ''
-                }
                 ${
                   likeCount > 0
                     ? `
@@ -74,11 +68,17 @@ export default class ProductList extends Component {
 
   setEventListener () {
     this.addEventListener('click', '.product-item', (e) => {
-      console.log(e.target.closest('.product-item'));
-    });
+      const $button = e.target.closest('.top-right-button');
 
-    this.addEventListener('click', '.top-right-button', (e) => {
-      console.log(e.target.closest('.top-right-button'));
+      if ($button) {
+        console.log('like');
+        return;
+      }
+
+      const $item = e.target.closest('.product-item');
+      const pid = $item.id;
+      console.log(`/productDetail/${pid}`);
+      window.location.assign(`/productDetail/${pid}`);
     });
   }
 }

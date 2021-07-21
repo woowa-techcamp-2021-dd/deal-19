@@ -1,6 +1,7 @@
 .dropdown__container {
   display: flex;
   flex-direction: column;
+  z-index: 20;
 
   .dropdown__wrapper {
     position: relative;

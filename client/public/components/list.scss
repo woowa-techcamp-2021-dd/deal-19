@@ -9,6 +9,7 @@
     display: flex;
     padding: 16px;
     position: relative;
+    cursor: pointer;
 
     .thumbnail {
       width: 106px;
@@ -50,6 +51,10 @@
 
       .wmi {
         font-size: 1.25rem;
+
+        &.full {
+          color: var(--red-color);
+        }
       }
     }
 

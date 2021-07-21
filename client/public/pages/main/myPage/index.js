@@ -3,6 +3,8 @@ import _ from '../../../utils/dom.js';
 import Header from '../../../components/header.js';
 import Login from '../login/index.js';
 
+import { AUTH_ENDPOINT } from '../../../configs/endpoints.js';
+
 import './style.scss';
 
 export default class MyPage extends Component {
@@ -10,6 +12,21 @@ export default class MyPage extends Component {
     this.state = {
       uid: '우아한'
     };
+
+    const { changeInnerContent } = this.props;
+    const token = window.localStorage.getItem('accessToken');
+
+    fetch(AUTH_ENDPOINT, {
+      method: 'HEAD',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((res) => {
+        if (!res.ok) {
+          changeInnerContent(Login)();
+        }
+      });
   }
 
   getTemplate () {
