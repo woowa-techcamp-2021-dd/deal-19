@@ -21,11 +21,18 @@
 .header__title {
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+.header__left-box {
+  display: flex;
+  align-items: center;
 }
 
 .header__right-box {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   & > div + div {
     margin-left : 10px;
   }

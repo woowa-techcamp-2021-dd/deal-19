@@ -5,7 +5,8 @@ import DropDown from '../components/dropdown.js';
 
 export default class Header extends Component {
   getTemplate () {
-    const { type, title } = this.props;
+    const { type = 'normal', title } = this.props;
+
     return `
       <div class="header ${type}">
         <div class="${type} header__left-box">${renderHeaderLeft(type)}</div>
@@ -18,7 +19,7 @@ export default class Header extends Component {
   }
 
   mountChildren () {
-    const { type, title, buttonList } = this.props;
+    const { type = 'normal', title, buttonList } = this.props;
 
     if (type === 'main') {
       new DropDown(_.$('.header__title'), { buttonTemplate: `<div><i class="wmi wmi-map-pin"></i> ${title}</div>`, position: 'center', buttonList });
@@ -30,12 +31,8 @@ export default class Header extends Component {
   }
 
   setEventListener () {
-    const { type, handlerClickRightIcon, closeSlider } = this.props;
-
+    const { type = 'normal', handlerClickRightIcon, closeSlider } = this.props;
     const $left = _.$(`.header__left-box.${type}`);
-    if (type && !['main', 'write', 'detail'].includes(type)) {
-      throw new Error('정확한 타입 지정 || 아예 쓰지 말 것');
-    }
 
     if (type === 'main') {
       this.setMainHeaderHandler();
