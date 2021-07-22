@@ -3,7 +3,8 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
 
-import dotenv from './utils/env.js';
+import './utils/env.js';
+
 import router from './routes/index.js';
 
 const PORT = process.env.PORT || 4000;

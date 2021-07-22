@@ -1,4 +1,4 @@
-function errorGenerator (message, code) {
+function errorGenerator ({ message, code }) {
   const error = new Error(message);
   error.code = code;
 

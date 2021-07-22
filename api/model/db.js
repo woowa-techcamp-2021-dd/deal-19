@@ -35,4 +35,8 @@ export async function insert (connection, query) {
   return rows.insertId;
 }
 
+export async function execute (connection, query) {
+  await connection.query(query);
+}
+
 export default pool;

@@ -16,3 +16,9 @@ export const decodeToken = (token) => {
 
   return decoded;
 };
+
+export const verifyToken = (token, errCallback) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
+    errCallback(err);
+  });
+};
