@@ -43,6 +43,7 @@ router.post('/', validateAuth, async (req, res, next) => {
     const townListCountSnapshot = await query(connection, GET_TOWN_LIST_COUNT_QUERY);
 
     if (townListCountSnapshot.data.townListCount >= MAX_TOWN_COUNT) {
+      connection.release();
       throw errorGenerator({
         message: 'no more than max towns',
         code: 'town/max-town-exceed'

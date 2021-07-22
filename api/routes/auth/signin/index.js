@@ -27,6 +27,7 @@ router.post('/', async (req, res, next) => {
     connection.release();
 
     if (userSnapshot.isEmpty) {
+      connection.release();
       throw errorGenerator({
         message: 'user not exists',
         code: 'auth/user-not-found'
