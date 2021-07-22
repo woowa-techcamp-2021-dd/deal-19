@@ -1,6 +1,8 @@
 import express from 'express';
 
 import pool, { insert, query } from '../../../model/db.js';
+import createQuery from '../../../model/query.js';
+
 import errorGenerator from '../../../utils/errorGenerator.js';
 import { createToken } from '../../../utils/jwt.js';
 
@@ -19,71 +21,45 @@ router.post('/', async (req, res, next) => {
 
     const connection = await pool.getConnection(async conn => conn);
 
-    const GET_USER_COUNT_QUERY = `
-      SELECT
-        COUNT(*) AS count
-      FROM USER
-      WHERE ID='${id}';
-    `;
-
+    const GET_USER_COUNT_QUERY = createQuery('/auth/GET_USER_COUNT', { id });
     const userCountSnapshot = await query(connection, GET_USER_COUNT_QUERY);
 
-    if (userCountSnapshot.data.count) {
-      throw errorGenerator(
-        'already signed up',
-        'auth/exisiting-id'
-      );
+    if (userCountSnapshot.data.count > 0) {
+      throw errorGenerator({
+        message: 'already signed up',
+        code: 'auth/exisiting-id'
+      });
     };
 
     connection.beginTransaction();
 
-    const INSERT_USER_QUERY = `
-      INSERT
-        INTO USER (ID)
-        VALUES ('${id}');
-    `;
+    const INSERT_USER_QUERY = createQuery('/auth/INSERT_USER_COUNT', { id });
 
     const uid = await insert(connection, INSERT_USER_QUERY);
 
-    const GET_TOWN_QUERY = `
-      SELECT
-        ID as townId
-      FROM TOWN
-      WHERE name='${town}'
-    `;
-
-    let townId = '';
-
+    const GET_TOWN_QUERY = createQuery('/auth/GET_TOWN', { town });
     const townSnapshot = await query(connection, GET_TOWN_QUERY);
 
-    if (!townSnapshot.data?.townId) {
-      const INSERT_TOWN_QUERY = `
-        INSERT
-          INTO TOWN (name)
-          VALUES ('${town}')
-      `;
+    let townID = '';
 
-      townId = await insert(connection, INSERT_TOWN_QUERY);
+    if (!townSnapshot.data?.townID) {
+      const INSERT_TOWN_QUERY = createQuery('/auth/INSERT_TOWN', { town });
+      townID = await insert(connection, INSERT_TOWN_QUERY);
     } else {
-      townId = townSnapshot.data.townId;
+      townID = townSnapshot.data.townID;
     }
 
-    const INSERT_TOWN_LIST_QUERY = `
-      INSERT
-        INTO TOWN_LIST (TOWN_ID, USER_UID, is_active)
-        VALUES ('${townId}', '${uid}', true);
-    `;
-
+    const INSERT_TOWN_LIST_QUERY = createQuery('/auth/INSERT_TOWN_LIST', { townID, uid, isActive: true });
     await insert(connection, INSERT_TOWN_LIST_QUERY);
 
     connection.commit();
+    connection.release();
 
     const accessToken = createToken({ uid });
 
-    res.status(201).json({
-      accessToken
-    });
+    res.status(201).json({ accessToken });
   } catch (err) {
+    console.log(err);
     switch (err.code) {
       case 'req/missing-body':
         res.status(400).json({
