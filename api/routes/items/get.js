@@ -1,5 +1,5 @@
 import express from 'express';
-import pool, { queryAll } from '../../model/db.js';
+import pool, { query, queryAll } from '../../model/db.js';
 import errorGenerator from '../../utils/errorGenerator.js';
 import validateAuth from '../../middlewares/validateAuth.js';
 
@@ -114,6 +114,92 @@ router.get('/', validateAuth, async (req, res, next) => {
     });
 
     res.status(200).json({ productList });
+  } catch (err) {
+    console.log(err);
+    switch (err.code) {
+      case 'req/wrong-query':
+        res.status(400).json({});
+        break;
+      default:
+        res.status(500).json({});
+    }
+  }
+});
+
+router.get('/:pid', validateAuth, async (req, res, next) => {
+  try {
+    const { pid } = req.params;
+
+    const token = req.headers.authorization.split('Bearer ')[1];
+    const { uid } = decodeToken(token);
+
+    const connection = await pool.getConnection(async conn => conn);
+
+    const GET_PRODUCT_QUERY = `
+      SELECT
+        PRODUCT.ID AS id,
+        PRODUCT.name AS name,
+        PRODUCT.timecreated AS timeCreated,
+        PRODUCT.price AS price,
+        PRODUCT.USER_UID AS userId,
+        PRODUCT.category,
+        PRODUCT.content,
+        PRODUCT.status,
+        TOWN.name AS town,
+        USER.id AS seller,
+        (SELECT
+          COUNT(*)
+        FROM LIKE_LIST
+        WHERE
+          PRODUCT_ID = PRODUCT.ID
+        ) AS likeCount,
+        (SELECT
+          USER_UID
+        FROM LIKE_LIST
+          WHERE (
+            USER_UID = ${uid}
+            AND PRODUCT_ID = PRODUCT.ID
+          )
+        ) AS isLiked
+      FROM PRODUCT
+      LEFT JOIN TOWN
+        ON PRODUCT.TOWN_ID = TOWN.ID
+      LEFT JOIN USER
+        ON PRODUCT.USER_UID = USER.UID
+      WHERE
+        PRODUCT.ID = ${pid}
+    `;
+
+    const GET_PRODUCT_IMAGES_QUERY = `
+      SELECT
+        image_url AS imageUrl
+      FROM PRODUCT_IMAGES
+      WHERE
+        PRODUCT_ID = ${pid}
+    `;
+
+    const productsSnapshot = await query(connection, GET_PRODUCT_QUERY);
+    const productImagesSnapshot = await queryAll(connection, GET_PRODUCT_IMAGES_QUERY);
+
+    const images = productImagesSnapshot.data.map(({ imageUrl }) => imageUrl);
+    const productData = productsSnapshot.data;
+
+    const response = {
+      images,
+      name: productData.name,
+      timeCreated: productData.timeCreated,
+      price: productData.price,
+      category: productData.category,
+      content: productData.content,
+      staus: productData.status,
+      town: productData.town,
+      likeCount: productData.likeCount,
+      isLiked: productData.isLiked,
+      seller: productData.seller,
+      isOwner: uid === productData.userId
+    };
+
+    res.status(200).json(response);
   } catch (err) {
     console.log(err);
     switch (err.code) {
