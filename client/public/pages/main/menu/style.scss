@@ -1,0 +1,24 @@
+.menu__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  input, .btn {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .text-btn {
+    font-size: var(--small-font-size);
+    font-weight: 500;
+    color: var(--title-color);
+  }
+}

@@ -1,0 +1,33 @@
+#town__contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ & > p {
+   margin: 25px 0;
+   text-align: center;
+   line-height: 20px;
+ } 
+}
+
+#town__town-buttons {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+ 
+  width: 100%;
+  padding: 0 16px;
+
+   & > li {
+     flex : 1;
+     display:flex;
+     justify-content: space-between;
+     &.adder {
+       justify-content: center;
+     }
+         
+   }
+
+   & > li + li {
+     margin-left: 16px;
+   }
+}

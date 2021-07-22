@@ -1,0 +1,24 @@
+.my-page__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 34px 16px 0;
+
+  .display {
+    margin-bottom: 34px;
+    font-weight: 500;
+    font-size: var(--small-font-size);
+  }
+
+  input, .btn {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .text-btn {
+    font-size: var(--small-font-size);
+    font-weight: 500;
+    color: var(--title-color);
+  }
+}

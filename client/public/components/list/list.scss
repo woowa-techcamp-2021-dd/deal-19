@@ -1,0 +1,85 @@
+@import '../../assets/woowa-market-icons.css';
+
+.product-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .product-item {
+    display: flex;
+    padding: 16px;
+    position: relative;
+    cursor: pointer;
+
+    .thumbnail {
+      width: 106px;
+      height: 106px;
+      background-color: var(--off-white-color);
+      border-radius: 10px;
+      border: 1px solid var(--gray3-color);
+    }
+
+    .product-info {
+      margin-left: 16px;
+
+      h4 {
+        font-weight: 500;
+        font-size: var(--medium-font-size);
+        color: var(--title-color);
+        margin-bottom: 4px;
+        line-height: 22px;
+      }
+      
+      .location {
+        font-size: var(--small-font-size);
+        color: var(--grey1-color);
+        margin-bottom: 4px;
+        line-height: 20px;
+      }
+
+      .price {
+        font-size: var(--small-font-size);
+        color: var(--title-color);
+        line-height: 20px;
+      }
+    }
+
+    .top-right-button {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+
+      .wmi {
+        font-size: 1.25rem;
+
+        &.full {
+          color: var(--red-color);
+        }
+      }
+    }
+
+    .count-wrapper {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      align-items: center;
+
+      .count-box {
+        display: flex;
+        align-items: center;
+        font-size: var(--small-font-size);
+        color: var(--grey1-color);
+        margin-left: 16px;
+
+        .wmi {
+          font-size: var(--small-font-size);
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+  .product-item:not(:last-child) {
+    border-bottom: 1px solid var(--gray3-color);
+  }
+}

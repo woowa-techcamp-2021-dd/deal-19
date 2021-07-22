@@ -1,0 +1,34 @@
+.register__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 24px 16px 0;
+  position: relative;
+
+  input, .btn {
+    width: 100%;
+  }
+
+  label {
+    font-size: var(--small-font-size);
+    color: var(--title-color);
+    width: 100%;
+    margin-bottom: 24px;
+
+    input {
+      margin-top: 8px;
+    }
+  }
+
+  .button-wrapper {
+    width: 100%;
+  }
+
+  .error-message {
+    font-size: var(--x-small-font-size);
+    color: var(--red-color);
+    margin-top: 4px;
+    position: absolute;
+  }
+}
