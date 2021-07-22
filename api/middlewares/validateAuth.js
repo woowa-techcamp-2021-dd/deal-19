@@ -1,33 +1,34 @@
-import jwt from 'jsonwebtoken';
+import { verifyToken } from '../utils/jwt.js';
 import errorGenerator from '../utils/errorGenerator.js';
 
 async function validateAuth (req, res, next) {
   try {
     const token = req.headers.authorization.split('Bearer ')[1];
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
-      if (err) {
-        switch (err.name) {
-          case 'ToeknExpiredeError':
-            throw errorGenerator(
-              err.message,
-              'auth/token-expired'
-            );
-          case 'JsonWebTokenError':
-            throw errorGenerator(
-              err.message,
-              'auth/invalid-token'
-            );
-          default:
-            throw errorGenerator(
-              err.message,
-              'auth/invalid-token'
-            );
-        }
+    verifyToken(token, (err) => {
+      if (!err) {
+        next();
+        return;
+      }
+
+      switch (err.name) {
+        case 'ToeknExpiredError':
+          throw errorGenerator({
+            message: err.message,
+            code: 'auth/token-expired'
+          });
+        case 'JsonWebTokenError':
+          throw errorGenerator({
+            message: err.message,
+            code: 'auth/invalid-token'
+          });
+        default:
+          throw errorGenerator({
+            message: err.message,
+            code: 'auth/invalid-token'
+          });
       }
     });
-
-    next();
   } catch (err) {
     console.log(err.code);
     switch (err.code) {
