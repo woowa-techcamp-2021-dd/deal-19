@@ -20,7 +20,9 @@
 }
 
 .carousel {
+  overflow-x: scroll;
   display: flex;
+  padding: 10px 0;
   & > * {
     flex-shrink: 0;
   }
@@ -94,6 +96,12 @@
     padding: 6px 16px;
     color: var(--gray1-color);
     font-weight: 400;
+    &:hover {
+      background: var(--primary-color);
+    }
+    &>input[type="radio"]:checked + label {
+      background: var(--primary-color)
+    }
   }
 }
 
@@ -135,5 +143,8 @@
     visibility: none;
     pointer-events: none;
     width: 0;
+  }
+  &.checked {
+    background : var(--primary-color)
   }
 }
