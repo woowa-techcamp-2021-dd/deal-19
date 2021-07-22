@@ -48,8 +48,8 @@ export default class Modal extends Component {
       return function () {
         if (action) {
           if (type === 'prompt') {
-            const townName = _.$('.input.full').value;
-            action(townName);
+            const inputValue = _.$('.input.full').value;
+            action(inputValue);
           } else {
             action();
           }
