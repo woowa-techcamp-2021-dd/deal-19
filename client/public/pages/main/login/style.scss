@@ -1,3 +1,10 @@
+#login__slider {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  height: 0;
+}
+
 .login__content {
   display: flex;
   flex-direction: column;
