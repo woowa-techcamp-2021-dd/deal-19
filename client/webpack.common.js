@@ -10,8 +10,6 @@ export default {
     main: './public/pages/main/index.js',
     editor: './public/pages/editor/index.js',
     productDetail: './public/pages/productDetail/index.js',
-    chatList: './public/pages/chatList/index.js',
-    chatDetail: './public/pages/chatDetail/index.js',
     location: './public/pages/location/index.js'
   },
   output: {
@@ -46,11 +44,11 @@ export default {
       },
       {
         test: /\.(svg|png|ico|jpg|jpeg)$/,
-        loader: 'file-loader',
+        loader: 'file-loader'
       },
       {
         test: /\.(woff|woff2|otf|ttf)$/,
-        loader: 'file-loader',
+        loader: 'file-loader'
       }
     ]
   },
@@ -74,18 +72,6 @@ export default {
       filename: 'productDetail/index.html',
       template: 'public/pages/productDetail/index.html',
       chunks: ['productDetail'],
-      favicon: 'public/assets/favicon.ico'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'chatList/index.html',
-      template: 'public/pages/chatList/index.html',
-      chunks: ['chatList'],
-      favicon: 'public/assets/favicon.ico'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'chatDetail/index.html',
-      template: 'public/pages/chatDetail/index.html',
-      chunks: ['chatDetail'],
       favicon: 'public/assets/favicon.ico'
     }),
     new HtmlWebpackPlugin({

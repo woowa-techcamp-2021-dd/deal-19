@@ -10,11 +10,11 @@ export default merge(common, {
   devtool: 'source-map',
   devServer: {
     contentBase: 'dist',
-    port: PORT,
+    port: PORT
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
-    }),
+      'process.env.NODE_ENV': JSON.stringify('development')
+    })
   ]
 });
