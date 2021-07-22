@@ -47,9 +47,8 @@ class App extends Component {
           window.location.assign('/');
         }
 
-        // const pid = window.location.pathname.split('productDetil/')[1];
-        // const API_ENDPOINT = `${ITEMS_ENDPOINT}/${pid}`;
-        const API_ENDPOINT = `${ITEMS_ENDPOINT}/1`;
+        const pid = window.location.pathname.split('productDetil/')[1];
+        const API_ENDPOINT = `${ITEMS_ENDPOINT}/${pid}`;
 
         request(API_ENDPOINT, 'GET', {
           headers: {
