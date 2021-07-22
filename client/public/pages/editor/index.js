@@ -70,7 +70,6 @@ class App extends Component {
   }
 
   didMount () {
-    console.log('마운트 후 실행');
     const { imageList, name, category, categoryList, price, content, location } = EDITOR_STATE;
     this.setState({ imageList, name, category, categoryList, price, content, location }, true);
   }

@@ -123,10 +123,8 @@ body {
   &.location.active {
     background : var(--primary-color);
     color: var(--white-color);
-    &:hover {
-      background: var(--primary-dark-color);
-    }
   }
+  
   &:hover {
     background: var(--primary-dark-color);
   }
