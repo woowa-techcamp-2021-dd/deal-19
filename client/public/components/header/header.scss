@@ -1,9 +1,9 @@
-@import '../assets/woowa-market-icons.css';
+@import '../../assets/woowa-market-icons.css';
 
 .header {
   display:flex;
   justify-content: space-between;
-  padding : 20px;
+  padding : 16px;
   background: var(--off-white-color);
   border-bottom: 1px solid var(--gray3-color);
 
@@ -16,6 +16,11 @@
   & > * {
     flex: 1;
   }
+
+  & .wmi {
+    font-size: 24px;
+    cursor: pointer;
+  }
 }
 
 .header__title {
@@ -27,6 +32,7 @@
 .header__left-box {
   display: flex;
   align-items: center;
+  height: 24px;
 }
 
 .header__right-box {

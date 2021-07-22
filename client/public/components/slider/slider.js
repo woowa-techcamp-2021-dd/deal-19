@@ -1,5 +1,5 @@
-import Component from '../core/component.js';
-import _ from '../utils/dom.js';
+import Component from '../../core/component.js';
+import _ from '../../utils/dom.js';
 import './slider.scss';
 
 export default class Slider extends Component {
@@ -34,7 +34,7 @@ export default class Slider extends Component {
     const $container = _.$('.slider__container');
     $container.addEventListener('animationend', () => {
       $container.classList.remove('open');
-    })
+    });
   }
 
   // custom method

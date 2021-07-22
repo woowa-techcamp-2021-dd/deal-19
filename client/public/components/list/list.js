@@ -1,7 +1,7 @@
-import Component from '../core/component.js';
+import Component from '../../core/component.js';
 
-import parsePrice from '../utils/parsePrice.js';
-import timeFromNow from '../utils/timeFromNow.js';
+import parsePrice from '../../utils/parsePrice.js';
+import timeFromNow from '../../utils/timeFromNow.js';
 
 import './list.scss';
 
