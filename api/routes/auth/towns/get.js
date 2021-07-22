@@ -22,7 +22,7 @@ router.get('/', validateAuth, async (req, res, next) => {
 
     const towns = userSnapshot.data.map((town) => {
       const { id, name, isActive } = town;
-      return { id, name, isActive };
+      return { id: String(id), name, isActive };
     });
 
     res.status(200).json({ towns });

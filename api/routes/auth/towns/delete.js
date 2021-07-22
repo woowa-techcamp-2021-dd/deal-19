@@ -9,9 +9,9 @@ import { decodeToken } from '../../../utils/jwt.js';
 
 const router = express.Router();
 
-router.delete('/', validateAuth, async (req, res, next) => {
+router.delete('/:townID', validateAuth, async (req, res, next) => {
   try {
-    const { townID } = req.body;
+    const { townID } = req.params;
 
     const token = req.headers.authorization.split('Bearer ')[1];
     const { uid } = decodeToken(token);
@@ -24,6 +24,28 @@ router.delete('/', validateAuth, async (req, res, next) => {
     }
 
     const connection = await pool.getConnection(async conn => conn);
+
+    const CHECK_OWN_TOWN_QUERY = createQuery('auth/CHECK_OWN_TOWN', { uid, townID });
+    const townOwnerSnapshot = await query(connection, CHECK_OWN_TOWN_QUERY);
+
+    if (!townOwnerSnapshot.data.own) {
+      connection.release();
+      throw errorGenerator({
+        message: 'unable to activate town',
+        code: 'town/no-owner'
+      });
+    }
+
+    const GET_TOWN_STATE_QUERY = createQuery('auth/GET_TOWN_STATE', { townID });
+    const townStateSnapshot = await query(connection, GET_TOWN_STATE_QUERY);
+
+    if (townStateSnapshot.data.isActive) {
+      connection.release();
+      throw errorGenerator({
+        message: 'unable to delete active town',
+        code: 'town/unable-delete-activated'
+      });
+    }
 
     const GET_TOWN_LIST_COUNT_QUERY = createQuery('auth/GET_TOWN_LIST_COUNT', { uid });
     const townListCountSnapshot = await query(connection, GET_TOWN_LIST_COUNT_QUERY);
@@ -43,10 +65,21 @@ router.delete('/', validateAuth, async (req, res, next) => {
 
     res.status(200).json({ townID });
   } catch (err) {
+    console.log(err);
     switch (err.code) {
       case 'req/missing-townID':
         res.status(400).json({
           message: '잘못된 삭제 요청입니다'
+        });
+        break;
+      case 'town/no-owner':
+        res.status(403).json({
+          message: '권한이 없습니다'
+        });
+        break;
+      case 'town/unable-delete-activated':
+        res.status(409).json({
+          message: '현재 활성화된 동네를 삭제할 수 없습니다'
         });
         break;
       case 'town/unable-to-clear':

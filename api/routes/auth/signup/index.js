@@ -58,7 +58,7 @@ router.post('/', async (req, res, next) => {
 
     const accessToken = createToken({ uid });
 
-    res.status(201).json({ accessToken });
+    res.status(201).json({ accessToken, id });
   } catch (err) {
     console.log(err);
     switch (err.code) {
