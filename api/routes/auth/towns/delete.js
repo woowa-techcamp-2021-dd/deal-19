@@ -29,6 +29,7 @@ router.delete('/', validateAuth, async (req, res, next) => {
     const townListCountSnapshot = await query(connection, GET_TOWN_LIST_COUNT_QUERY);
 
     if (townListCountSnapshot.data.townListCount === 1) {
+      connection.release();
       throw errorGenerator({
         message: 'unable to clear town list',
         code: 'town/unable-to-clear'

@@ -1,16 +1,17 @@
 import Component from '../../core/component.js';
+
 import _ from '../../utils/dom.js';
 import request from '../../utils/fetchWrapper.js';
+import checkTokenValidity from '../../utils/checkTokenValidity.js';
 
-import Header from '../../components/header.js';
+import Header from '../../components/header/header.js';
 import footer from './footer/index.js';
 import Carousel from './carousel/index.js';
 
-import parseProductStatus from '../../utils/parseProductStatus.js';
 import parseCategoryType from '../../utils/parseCategoryType.js';
 import timeFromNow from '../../utils/timeFromNow.js';
 
-import { AUTH_ENDPOINT, ITEMS_ENDPOINT } from '../../configs/endpoints.js';
+import { PRODUCTS_ENDPOINT } from '../../configs/endpoints.js';
 
 import './style.scss';
 
@@ -20,7 +21,6 @@ class App extends Component {
   initState () {
     this.state = {
       images: [],
-      status: 'sold',
       name: '',
       category: 'etc',
       timestamp: '',
@@ -33,65 +33,10 @@ class App extends Component {
       isLiked: false,
       isOwner: false
     };
-
-    const token = window.localStorage.getItem('accessToken');
-
-    fetch(AUTH_ENDPOINT, {
-      method: 'HEAD',
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then((res) => {
-        if (!res.ok) {
-          window.location.assign('/');
-        }
-
-        const pid = window.location.pathname.split('productDetil/')[1];
-        const API_ENDPOINT = `${ITEMS_ENDPOINT}/${pid}`;
-
-        request(API_ENDPOINT, 'GET', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-          .then((result) => {
-            const {
-              images,
-              name,
-              timeCreated,
-              price,
-              category,
-              content,
-              status,
-              town,
-              likeCount,
-              isLiked,
-              seller,
-              isOwner
-            } = result;
-
-            this.setState({
-              images,
-              status,
-              name,
-              category,
-              timeCreated,
-              content,
-              likeCount,
-              seller,
-              town,
-              price,
-              isLiked,
-              isOwner
-            }, true);
-          });
-      });
   }
 
   getTemplate () {
     const {
-      status,
       name,
       category,
       timeCreated,
@@ -109,14 +54,6 @@ class App extends Component {
       <main>
         <div id="product-detail__carousel"></div>
         <div class="content-container">
-          <div class="dropdown">
-            ${parseProductStatus(status)}
-            ${
-              isOwner
-              ? '<i class="wmi wmi-chevron-down"></i>'
-              : ''
-            }
-          </div>
           <h3 class="name">${name}</h3>
           <div class="info">
             ${parseCategoryType(category)}
@@ -147,12 +84,65 @@ class App extends Component {
     const $header = _.$('#product-detail__header');
     const $carousel = _.$('#product-detail__carousel');
 
-    new Header($header, { type: 'detail', title: '', buttonList: [] });
+    new Header($header, { type: 'detail', title: '', buttonList: [{ label: '수정하기', action: () => {} }, { label: '삭제하기', action: () => {} }] });
     new Carousel($carousel, { images });
   }
 
   setEventListener () {
 
+  }
+
+  didInitialMount () {
+    checkTokenValidity((success) => {
+      if (success) {
+        const token = window.localStorage.getItem('_at');
+        this.requestProduct(token);
+      } else {
+        window.localStorage.removeItem('_at');
+        window.location.replace('/');
+      }
+    });
+  }
+
+  // Custom Methods
+  requestProduct (token) {
+    const pid = window.location.pathname.split('productDetail/')[1];
+    const API_ENDPOINT = `${PRODUCTS_ENDPOINT}/${pid}`;
+
+    request(API_ENDPOINT, 'GET', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((result) => {
+        const {
+          images,
+          name,
+          timeCreated,
+          price,
+          category,
+          content,
+          town,
+          likeCount,
+          isLiked,
+          seller,
+          isOwner
+        } = result;
+
+        this.setState({
+          images,
+          name,
+          category,
+          timeCreated,
+          content,
+          likeCount,
+          seller,
+          town,
+          price,
+          isLiked,
+          isOwner
+        }, true);
+      });
   }
 }
 

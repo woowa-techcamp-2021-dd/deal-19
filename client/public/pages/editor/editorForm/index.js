@@ -1,10 +1,21 @@
 import Component from '../../../core/component.js';
+
 import parsePrice from '../../../utils/parsePrice.js';
+
+import { categoryList } from '../../../configs/constants.js';
+
 import './style.scss';
 
 export default class EditorForm extends Component {
+  initState () {
+    this.state = {
+      categoryList
+    };
+  }
+
   getTemplate () {
-    const { imageList, name, category, categoryList, price, content, location } = this.props;
+    const { categoryList } = this.state;
+    const { imageList, name, category, price, content, location } = this.props;
     return `
       <div class="write__image-list content-box">
         <input class="input-area" id="input-image" type="file" accept="img/*"  multiple />
@@ -28,7 +39,7 @@ export default class EditorForm extends Component {
       </div>
       <div class="write__info content-box">
         <div>
-        <input class="input-area" id="input-name" type="text" value="${name}" name="name" >
+        <input class="input-area" id="input-name" type="text" value="${name}" name="name" placeholder="제목을 적어주세요" >
       </div>
       <div class="category">${
         category.id === '' ? '(필수) 카테고리를 선택해주세요.' : category.title
@@ -36,9 +47,9 @@ export default class EditorForm extends Component {
       <div class="carousel">
       ${categoryList
         .map(
-          ({ title, id }) =>
-            `<div class="category-item">
-            <input class="input-area" type="radio" id="category-${id}" name="category" value="${title}" data-id="${id}">
+          ({ title, id, isActive }) =>
+            `<div class="category-item ${isActive ? 'checked' : ''}">
+            <input class="input-area" type="radio" id="category-${id}" name="category" value="${title}" data-id="${id}"}>
             <label for="category-${id}">${title}</label>
           </div>`
         )
@@ -50,7 +61,7 @@ export default class EditorForm extends Component {
       )}" />
       </div>
       <div class="write__contents content-box">
-        <textarea id="input-contents" name="content" class="input-area">${content}</textarea>
+        <textarea id="input-contents" name="content" class="input-area" placeholder="설명을 추가해주세요">${content}</textarea>
       </div>
         <div class="write__footer" >
       <div >${location}</div>
@@ -71,6 +82,11 @@ export default class EditorForm extends Component {
       }
       if (name === 'category') {
         const id = target.dataset.id;
+        const { categoryList } = this.state;
+        const newCategoryList = categoryList.map((category) => {
+          category.isActive = category.id === id;
+          return category;
+        });
         onChangeInput({ [name]: { id, title: value } });
         return;
       }

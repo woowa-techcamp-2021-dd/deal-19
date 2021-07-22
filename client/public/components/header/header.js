@@ -1,7 +1,7 @@
-import Component from '../core/component.js';
-import _ from '../utils/dom.js';
+import Component from '../../core/component.js';
+import _ from '../../utils/dom.js';
+import DropDown from '../dropdown/dropdown.js';
 import './header.scss';
-import DropDown from '../components/dropdown.js';
 
 export default class Header extends Component {
   getTemplate () {
@@ -56,7 +56,6 @@ export default class Header extends Component {
 
   setMainHeaderHandler () {
     const { openSlider, type } = this.props;
-
     _.$(`.header__left-box.${type}`).addEventListener('click', () => {
       openSlider('category');
     });
@@ -64,6 +63,7 @@ export default class Header extends Component {
     _.$(`.header__my-account.${type}`).addEventListener('click', () => {
       openSlider('myPage');
     });
+
     _.$(`.header__menu.${type}`).addEventListener('click', () => {
       openSlider('menu');
     });
@@ -82,9 +82,9 @@ const moveToPrevPage = () => {
 
 const renderHeaderLeft = (type) => {
   if (type !== 'main') {
-    return '<div class="wmi-chevron-left"></div>';
+    return '<div class="wmi wmi-chevron-left"></div>';
   }
-  return '<div class="wmi-category"></div>';
+  return '<div class="wmi wmi-category"></div>';
 };
 
 const renderHeaderRight = (type) => {
@@ -92,9 +92,9 @@ const renderHeaderRight = (type) => {
 
   switch (type) {
     case 'main':
-      return `<div class="wmi-user header__my-account ${type}"></div><div class="wmi-menu header__menu ${type}"></div>`;
+      return `<div class="wmi wmi-user header__my-account ${type}"></div><div class="wmi wmi-menu header__menu ${type}"></div>`;
     case 'write':
-      return '<button form="editor__form"><div class="wmi-check"></div></button>';
+      return '<button form="editor__form"><div class="wmi wmi-check"></div></button>';
     default :
       return '';
   }

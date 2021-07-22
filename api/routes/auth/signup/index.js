@@ -21,10 +21,11 @@ router.post('/', async (req, res, next) => {
 
     const connection = await pool.getConnection(async conn => conn);
 
-    const GET_USER_COUNT_QUERY = createQuery('/auth/GET_USER_COUNT', { id });
+    const GET_USER_COUNT_QUERY = createQuery('auth/GET_USER_COUNT', { id });
     const userCountSnapshot = await query(connection, GET_USER_COUNT_QUERY);
 
     if (userCountSnapshot.data.count > 0) {
+      connection.release();
       throw errorGenerator({
         message: 'already signed up',
         code: 'auth/exisiting-id'
@@ -33,23 +34,23 @@ router.post('/', async (req, res, next) => {
 
     connection.beginTransaction();
 
-    const INSERT_USER_QUERY = createQuery('/auth/INSERT_USER_COUNT', { id });
+    const INSERT_USER_QUERY = createQuery('auth/INSERT_USER', { id });
 
     const uid = await insert(connection, INSERT_USER_QUERY);
 
-    const GET_TOWN_QUERY = createQuery('/auth/GET_TOWN', { town });
+    const GET_TOWN_QUERY = createQuery('auth/GET_TOWN', { town });
     const townSnapshot = await query(connection, GET_TOWN_QUERY);
 
     let townID = '';
 
     if (!townSnapshot.data?.townID) {
-      const INSERT_TOWN_QUERY = createQuery('/auth/INSERT_TOWN', { town });
+      const INSERT_TOWN_QUERY = createQuery('auth/INSERT_TOWN', { town });
       townID = await insert(connection, INSERT_TOWN_QUERY);
     } else {
       townID = townSnapshot.data.townID;
     }
 
-    const INSERT_TOWN_LIST_QUERY = createQuery('/auth/INSERT_TOWN_LIST', { townID, uid, isActive: true });
+    const INSERT_TOWN_LIST_QUERY = createQuery('auth/INSERT_TOWN_LIST', { townID, uid, isActive: true });
     await insert(connection, INSERT_TOWN_LIST_QUERY);
 
     connection.commit();

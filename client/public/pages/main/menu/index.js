@@ -1,17 +1,21 @@
 import Component from '../../../core/component.js';
 import _ from '../../../utils/dom.js';
-import Header from '../../../components/header.js';
-import TabBar from '../tabBar/index.js';
-import List from '../../../components/list.js';
+import request from '../../../utils/fetchWrapper.js';
 
-import { productList, sellProductList } from '../../../configs/mock.data.js';
+import Header from '../../../components/header/header.js';
+import TabBar from '../tabBar/index.js';
+import List from '../../../components/list/list.js';
+
+import { PRODUCTS_ENDPOINT } from '../../../configs/endpoints.js';
+import { SELL_TAB, LIKE_TAB } from '../../../configs/constants.js';
 
 import './style.scss';
 
 export default class Menu extends Component {
   initState () {
     this.state = {
-      tab: 'sell'
+      tab: SELL_TAB,
+      productList: []
     };
   }
 
@@ -24,7 +28,7 @@ export default class Menu extends Component {
   }
 
   mountChildren () {
-    const { tab } = this.state;
+    const { tab, productList } = this.state;
     const { closeSlider } = this.props;
 
     const $header = _.$('#menu__header');
@@ -36,41 +40,46 @@ export default class Menu extends Component {
       current: tab,
       tabList: [
         {
-          id: 'sell',
+          id: SELL_TAB,
           label: '판매목록',
-          action: this.changeTab('sell')
+          action: this.changeTab.bind(this, SELL_TAB)
         },
         {
-          id: 'chat',
-          label: '채팅',
-          action: this.changeTab('chat')
-        },
-        {
-          id: 'like',
+          id: LIKE_TAB,
           label: '관심목록',
-          action: this.changeTab('like')
+          action: this.changeTab.bind(this, LIKE_TAB)
         }
       ]
     });
 
-    switch (tab) {
-      case 'chat':
-        // TODO: add chat list
-        break;
-      case 'like':
-        new List($main, { productList });
-        break;
-      default:
-        new List($main, { productList: sellProductList });
-    }
+    new List($main, { productList });
   }
 
-  setEventListener () {
+  didInitialMount () {
+    const token = window.localStorage.getItem('_at');
 
+    requestProductList.call(this, token, 'sale');
   }
 
   // Custom Method
   changeTab (tab) {
-    return () => this.setState({ tab });
+    this.setState({ tab });
+
+    const token = window.localStorage.getItem('_at');
+    const type = tab === SELL_TAB ? 'sale' : 'liked';
+
+    requestProductList.call(this, token, type);
   }
+}
+
+function requestProductList (token, type) {
+  request(`${PRODUCTS_ENDPOINT}?type=${type}`, 'GET', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+    .then((result) => {
+      const { productList } = result;
+      this.setState({ productList });
+    });
 }

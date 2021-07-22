@@ -1,17 +1,23 @@
 import Component from '../../core/component.js';
+
 import _ from '../../utils/dom.js';
-import './style.scss';
-import Header from '../../components/header.js';
-import Modal from '../../components/modal.js';
 import request from '../../utils/fetchWrapper.js';
+import checkTokenValidity from '../../utils/checkTokenValidity.js';
+
+import Header from '../../components/header/header.js';
+import Modal from '../../components/modal/modal.js';
+
 import { TOWN_ENDPOINT } from '../../configs/endpoints.js';
+
+import './style.scss';
+
 const $root = document.querySelector('#root');
 
 export default class App extends Component {
   initState () {
     this.state = {
       isOpenModal: false,
-      townList: [{ id: '1', name: '방이동', isActive: true }]
+      townList: []
     };
   }
 
@@ -25,10 +31,10 @@ export default class App extends Component {
         <ul id="town__town-buttons">
           ${townList
             .map(
-              ({ id, name, isActive }) =>
+              ({ id, name, isActive }, i, array) =>
                 `<li class="btn small location ${isActive ? 'active' : ''}" data-id=${id}>
                   <div>${name}</div>
-                  <div class="wmi-close"></div>
+                  <div class="${isActive ? '' : 'wmi-close'}"></div>
                 </li>`
             )
             .join('')}
@@ -44,7 +50,6 @@ export default class App extends Component {
   }
 
   mountChildren () {
-    const { registerTown } = this;
     const { isOpenModal } = this.state;
 
     const $header = _.$('#town__header');
@@ -53,16 +58,35 @@ export default class App extends Component {
 
     if (isOpenModal) {
       const $modal = _.$('#town__modal');
-      new Modal($modal, { type: 'prompt', text: '우리 동네를 입력하세요', placeholder: '시.구 제외, 동만 입력', action: registerTown.bind(this) });
+      new Modal($modal, {
+        type: 'prompt',
+        text: '우리 동네를 입력하세요',
+        placeholder: '시.구 제외, 동만 입력',
+        action: this.requestTownRegistration.bind(this)
+      });
     }
+  }
+
+  didInitialMount () {
+    checkTokenValidity((success) => {
+      if (success) {
+        const token = window.localStorage.getItem('_at');
+        this.requestTownList(token);
+      } else {
+        window.localStorage.removeItem('_at');
+        window.location.replace('/');
+      }
+    });
   }
 
   setEventListener () {
     this.addEventListener('click', '.btn.location', (e) => {
       const classList = e.target.classList;
+
       if (classList.contains('wmi-close')) {
         return;
       }
+
       if (classList.contains('adder')) {
         this.setState({ isOpenModal: true });
         return;
@@ -73,94 +97,120 @@ export default class App extends Component {
       if ($li.classList.contains('active')) {
         return;
       }
-      this.selectActiveTown($li.dataset.id);
+
+      this.requestSwitchActiveTown($li.dataset.id);
     });
 
     this.addEventListener('click', '.btn.location > .wmi-close', (e) => {
       const $li = e.target.closest('.btn.location');
-      const townId = $li.dataset.id;
-      this.deleteTown(townId);
+      const townID = $li.dataset.id;
+      this.requestTownDeletion(townID);
     });
   }
 
-  selectActiveTown (townId) {
-    const { townList } = this.state;
-    const switchActiveTown = townList.map(town => {
-      town.isActive = false;
-      if (town.id === townId) town.isActive = true;
-      return town;
-    }
-    );
-    this.setState({ townList: switchActiveTown });
+  // Custom Methods
+  requestSwitchActiveTown (townID) {
+    const token = localStorage.getItem('_at');
+    request(`${TOWN_ENDPOINT}/${townID}`, 'PUT', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      path: JSON.stringify({
+        townID
+      })
+    }).then(result => {
+      const { townID } = result;
+      const { townList } = this.state;
+
+      const switchedActiveTownList = townList.map(town => {
+        town.isActive = town.id === townID;
+        return town;
+      });
+      this.setState({ townList: switchedActiveTownList });
+    });
   }
 
-  deleteTown (townId) {
-    const accessToken = localStorage.getItem('accessToken');
-    request(TOWN_ENDPOINT, 'DELETE', {
-      body: JSON.stringify({
-        townId
-      }),
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
-      }
-    }).then(res => {
-      const { townId } = res;
+  requestTownDeletion (townID) {
+    const token = localStorage.getItem('_at');
 
+    request(`${TOWN_ENDPOINT}/${townID}`, 'DELETE', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      path: JSON.stringify({
+        townID
+      })
+    }).then(result => {
+      const { townID } = result;
       const { townList } = this.state;
-      const newTownList = activatedTownList(removeTown(townList, townId));
+      const newTownList = activatedTownList(removeTown(townList, townID));
+
       this.setState({ townList: newTownList, isOpenModal: !newTownList.length });
     }).catch(errorMessage => {
-      console.log('err??');
       this.setState({ errorMessage });
     });
-  }
+  };
 
-  registerTown (townName) {
+  requestTownRegistration (town) {
     const $button = _.$('#modal-confirm');
     $button.setAttribute('disabled', true);
-    const accessToken = localStorage.getItem('accessToken');
+
+    const token = localStorage.getItem('_at');
     const { townList } = this.state;
+
     request(TOWN_ENDPOINT, 'POST', {
-      body: JSON.stringify({
-        townName, isActive: !townList.length
-      }),
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        town, isActive: !townList.length
+      })
     }).then((result) => {
       const { id, name } = result;
       const newTownList = activatedTownList([...townList, { id, name, isActive: false }]);
+
       this.setState({ townList: newTownList });
     }).catch((errorMessage) => {
       this.setState({ errorMessage });
     }).finally(() => {
       this.setState({ isOpenModal: false });
     });
-    // 이 동네를 유저의 메인 동네 isActive로 등록 요청하고 id, town이름을 응답 받음(id를 서버가 생성하기에)
-    //
-
-    // 현재 메인 동네가 없으면 이 동네를 메인으로 등록 (서버와는 별개)
   }
 
-  didMount () {}
+  requestTownList (token) {
+    request(TOWN_ENDPOINT, 'GET', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    }).then((result) => {
+      const { towns } = result;
+      this.setState({ townList: towns });
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
 }
 
-const removeTown = (townList, townId) => {
+const removeTown = (townList, townID) => {
   return townList.filter(town => {
-    return town.id !== townId;
+    return town.id !== townID;
   });
 };
+
 const activatedTownList = townList => {
   if (!townList.length) return [];
-  const filterd = townList.filter(town => town.isActive);
-  if (filterd.length) {
-    return townList;
-  } else {
+
+  const isActive = townList.filter(town => town.isActive).length;
+
+  if (!isActive) {
     townList[0].isActive = true;
-    return townList;
   }
+
+  return townList;
 };
 
 new App($root);

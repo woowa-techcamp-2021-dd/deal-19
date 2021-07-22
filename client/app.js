@@ -5,12 +5,12 @@ import logger from 'morgan';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpack from 'webpack';
 
+import devServerMiddleware from './middlewares/devServerMiddleware.js';
+import webpackDevConfig from './webpack.dev.js';
+
 import router from './routes/index.js';
 
-import config from './webpack.dev.js';
-import devServerMiddleware from './devServerMiddleware.js';
-
-const compiler = webpack(config);
+const compiler = webpack(webpackDevConfig);
 const __dirname = path.resolve();
 
 const app = express();
@@ -20,10 +20,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-
 if (process.env.NODE_ENV === 'development') {
   app.use(webpackDevMiddleware(compiler, {
-    publicPath: config.output.publicPath
+    publicPath: webpackDevConfig.output.publicPath
   }));
   app.use(devServerMiddleware(compiler));
 } else {

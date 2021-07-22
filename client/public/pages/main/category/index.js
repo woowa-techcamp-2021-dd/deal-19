@@ -1,7 +1,11 @@
 import Component from '../../../core/component.js';
-import Header from '../../../components/header.js';
-import { categoryList } from '../../../configs/constants.js';
+
 import _ from '../../../utils/dom.js';
+
+import Header from '../../../components/header/header.js';
+
+import { categoryList } from '../../../configs/constants.js';
+
 import './style.scss';
 
 export default class Category extends Component {
@@ -11,11 +15,11 @@ export default class Category extends Component {
       <div class="category__content">
         ${
           categoryList.map((category) => {
-            const { title, id } = category;
+            const { title, id, src } = category;
             return (`
               <button class="category__item" data-category="${id}">
                 <figure class="img-box small">
-                  <img src="">
+                  <img src="${src}">
                 </figure>
                 <div class="title">${title}</div>
               </button>
