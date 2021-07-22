@@ -5,6 +5,12 @@ const auth = {
     FROM USER
     WHERE id = '${id}';
   `,
+  GET_USER_ID: ({ uid }) => `
+    SELECT
+      ID AS userID
+    FROM USER
+    WHERE UID = '${uid}';
+  `,
   GET_USER_COUNT: ({ id }) => `
     SELECT
       COUNT(*) AS count
@@ -18,9 +24,37 @@ const auth = {
   `,
   GET_TOWN: ({ town }) => `
     SELECT
-      ID as townID
+      ID AS townID
     FROM TOWN
-    WHERE name = '${town}';
+    WHERE 
+      name = '${town}'
+  `,
+  CHECK_OWN_TOWN: ({ uid, townID }) => `
+    SELECT
+      COUNT(*) AS own
+    FROM TOWN_LIST
+    WHERE
+      USER_UID = ${uid}
+      AND TOWN_ID = ${townID};
+  `,
+  GET_TOWN_STATE: ({ townID }) => `
+    SELECT
+      is_active AS isActive
+    FROM TOWN_LIST
+      WHERE TOWN_ID = ${townID};
+  `,
+  CLEAR_TOWN_LIST: ({ uid }) => `
+    UPDATE
+      TOWN_LIST
+    SET is_active = false
+    WHERE USER_UID = ${uid}
+  `,
+  ACTIVATE_TOWN_LIST: ({ townID, uid }) => `
+    UPDATE
+      TOWN_LIST
+    SET is_active = true
+    WHERE USER_UID = ${uid}
+      AND TOWN_ID = ${townID}
   `,
   GET_TOWN_LIST_COUNT: ({ uid }) => `
     SELECT
