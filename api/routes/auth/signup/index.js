@@ -84,7 +84,6 @@ router.post('/', async (req, res, next) => {
       accessToken
     });
   } catch (err) {
-    console.log(err);
     switch (err.code) {
       case 'req/missing-body':
         res.status(400).json({
