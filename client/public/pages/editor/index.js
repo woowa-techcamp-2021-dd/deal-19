@@ -76,24 +76,16 @@ class App extends Component {
         'Content-Type': 'application/json'
       }
     }).then((response) => {
-      window.location.assign(`/productDetail/${response.pid}`);
+      window.location.replace(`/productDetail/${response.pid}`);
     }).catch((err) => {
-      this.setState({ errorMessage: err }, true);
+      this.setState({ errorMessage: err });
     }).finally(() => {
       // finally
     });
   }
 
-  didMount () {
-    // 글쓰기 말고 수정하기 일 때 그 프로덕트의 데이터 받아와서 미리 뿌려주기.
-    // 확인 버튼 누르면 새로운 글 쓰기가 아니라 글 수정하기 api로 가야 함
-    // const { imageList, name, category,  price, content, location } = EDITOR_STATE;
-    // this.setState({ imageList, name, category,  price, content, location }, true);
-    // 
-  }
-
   onChangeInput (newContents) {
-    this.setState(newContents, true);
+    this.setState(newContents);
   }
 
   setEventListener () {}

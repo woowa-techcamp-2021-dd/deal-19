@@ -47,11 +47,13 @@ export default class EditorForm extends Component {
       <div class="carousel">
       ${categoryList
         .map(
-          ({ title, id, isActive }) =>
-            `<div class="category-item ${isActive ? 'checked' : ''}">
+          ({ title, id, isActive }) => {
+            if (!id) return '';
+            return `<div class="category-item ${isActive ? 'checked' : ''}">
             <input class="input-area" type="radio" id="category-${id}" name="category" value="${title}" data-id="${id}"}>
             <label for="category-${id}">${title}</label>
-          </div>`
+          </div>`;
+ }
         )
         .join('')}</div>
       </div>
